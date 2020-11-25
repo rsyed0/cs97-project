@@ -18,3 +18,10 @@ reportWebVitals();
 
 // TODO implement uploads using https://nodejs.dev/learn/make-an-http-post-request-using-nodejs
 // TODO implement queries using https://nodejs.dev/learn/making-http-requests-with-nodejs
+// TODO use fetch() to make GET requests, code in https://reactjs.org/docs/faq-ajax.html
+
+// FROM https://medium.com/better-programming/video-stream-with-node-js-and-html5-320b3191a6b6
+// for streaming video from uploads
+/* <video id="videoPlayer" controls>
+	<source src="http://localhost:3000/stream-video" type="video/mp4">
+</video> */
