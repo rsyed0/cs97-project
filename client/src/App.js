@@ -1,25 +1,30 @@
+/* FROM https://www.freecodecamp.org/news/create-a-react-frontend-a-node-express-backend-and-connect-them-together-c5798926047c/ */
+/* TODO add multi page application functionality from https://www.golangprograms.com/how-to-create-simple-react-router-to-navigate-multiple-pages.html */
+import React, { Component } from "react"
 import logo from './logo.svg';
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
+ 
+import Home from './components/home';
+import Browse from './components/browse';
+import Upload from './components/upload';
+ 
+class App extends Component {
+  render() {
+    return (      
+        <BrowserRouter>
+            <div>
+                <Switch>
+                    <Route path="/" component={Home} />
+                    <Route path="/browse" component={Browse}/>
+                    <Route path="/upload" component={Upload}/>
+                </Switch>
+            </div>
+        </BrowserRouter>
+    );
+  }
 }
 
 export default App;
+
