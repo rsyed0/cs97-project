@@ -38,6 +38,26 @@ import firebase from "../firebase";
 
 }*/
 
+/*export const UserLocation = () => {
+    const {
+        latitude,
+        longitude,
+        timestamp,
+        accuracy,
+        error,
+    } = usePosition();
+
+    return (
+        <code>
+            latitude: {latitude}<br/>
+            longitude: {longitude}<br/>
+            timestamp: {timestamp}<br/>
+            accuracy: {accuracy && `${accuracy}m`}<br/>
+            error: {error}
+        </code>
+    );
+};*/
+
 // class to show video currently being viewed
 // pane is part of the HomeScreen
 class VideoPane extends React.Component {
@@ -47,7 +67,7 @@ class VideoPane extends React.Component {
     }
 
     render(){
-        return ();
+        return (<div className="videoPane"></div>);
     }
 
 }
@@ -61,20 +81,7 @@ class HomeScreen extends React.Component {
         super(props);
 
         // max distance (in lat/lng degrees) where a post will show
-        this.state = {maxDist: 0.1, posts: null};
-    }
-
-    getUserLocation(){
-        const {
-            latitude,
-            longitude,
-            speed,
-            timestamp,
-            accuracy,
-            error,
-        } = usePosition();
-
-        return {lat: latitude, lng: longitude};
+        this.state = {maxDist: 0.25, posts: [], userLat: 0, userLng: 0};
     }
 
     loadNearbyPosts(){
@@ -84,13 +91,21 @@ class HomeScreen extends React.Component {
         ref.onSnapshot((querySnapshot) => {
 
             let posts = [];
-            const userPos = getUserLocation();
+            //const userPos = UserLocation();
 
             querySnapshot.forEach((doc) => {
 
-                if (Math.pow(Math.abs(userPos.lat - doc.lat),2) + 
-                    Math.pow(Math.abs(userPos.lng - doc.lng),2) <= this.state.maxDist)
-                    posts.push(doc.data());
+                let data = doc.data();
+                console.log(data);
+
+                let dist = Math.sqrt(Math.pow(Math.abs(this.state.userLat - data.lat),2) + 
+                    Math.pow(Math.abs(this.state.userLng - data.lng),2));
+
+                console.log("for post: lat: "+data.lat+", lng: "+data.lng);
+                console.log("dist from post: "+dist);
+
+                if (dist <= this.state.maxDist)
+                    posts.push(data);
 
             });
 
@@ -100,7 +115,18 @@ class HomeScreen extends React.Component {
     }
 
     componentDidMount (){
-        loadNearbyPosts();
+        const homeScreen = this;
+
+        navigator.geolocation.getCurrentPosition(function(position) {
+            homeScreen.setState({
+                userLat: position.coords.latitude, 
+                userLng: position.coords.longitude
+            });
+
+            console.log("for user: lat: "+homeScreen.state.userLat+", lng: "+homeScreen.state.userLng);
+
+            homeScreen.loadNearbyPosts();
+        });
     }
 
     // TODO use .map() method with firebase to load posts dynamically

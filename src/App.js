@@ -10,40 +10,44 @@ import UploadScreen from './screens/upload';
 import ProfileScreen from './screens/profile';
 import NotFoundScreen from './screens/notfound';
 
-// TODO implement different screens with https://reactnative.dev/docs/navigation
-class App {
-    constructor (){
+class App extends React.Component{
+    constructor (props){
+        super(props);
         this.state = {
             screen: "home",
         };
     }
 
+    // method to navigate to new screen
     handleScreenChange = (newScreen) => {
         this.setState({screen: newScreen});
+        console.log("set screen to "+this.state.screen);
     }
 
+    // route to different screens
     render (){
-        if (this.screen === "landing"){
+        console.log("rendering "+this.state.screen);
+        if (this.state.screen === "landing"){
             return (
                 <LandingScreen onChangeScreen={this.handleScreenChange} />
             );
-        } else if (this.screen === "login"){
+        } else if (this.state.screen === "login"){
             return (
                 <LoginScreen onChangeScreen={this.handleScreenChange} />
             );
-        } else if (this.screen === "signup"){
+        } else if (this.state.screen === "signup"){
             return (
                 <SignupScreen onChangeScreen={this.handleScreenChange} />
             );
-        } else if (this.screen === "home"){
+        } else if (this.state.screen === "home"){
             return (
                 <HomeScreen onChangeScreen={this.handleScreenChange} />
             );
-        } else if (this.screen === "upload"){
+        } else if (this.state.screen === "upload"){
             return (
                 <UploadScreen onChangeScreen={this.handleScreenChange} />
             );
-        } else if (this.screen === "profile"){
+        } else if (this.state.screen === "profile"){
             return (
                 <ProfileScreen onChangeScreen={this.handleScreenChange} />
             );

@@ -1,6 +1,6 @@
 import React, { Component } from "react"
-import logo from './logo.svg';
-import './App.css';
+import logo from '../logo.svg';
+import '../App.css';
 
 // 404 page
 class NotFoundScreen extends React.Component{
