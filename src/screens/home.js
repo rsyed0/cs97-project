@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 import SplitPane, { Pane } from 'react-split-pane';
 
-import { usePosition } from 'use-position';
+//import { usePosition } from 'use-position';
 
 import firebase from "../firebase";
 
