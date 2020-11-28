@@ -1,7 +1,11 @@
 import React, { Component } from "react"
 import SplitPane, { Pane } from 'react-split-pane';
 
-//import { usePosition } from 'use-position';
+import { usePosition } from 'use-position';
+
+import { useHistory } from "react-router-dom";
+import { withRouter } from "react-router";
+//import { Redirect, withRouter } from "react-router";
 
 import firebase from "../firebase";
 
@@ -81,7 +85,17 @@ class HomeScreen extends React.Component {
         super(props);
 
         // max distance (in lat/lng degrees) where a post will show
-        this.state = {maxDist: 0.25, posts: [], userLat: 0, userLng: 0};
+        this.state = {
+            maxDist: 0.25, 
+            posts: [], 
+            userLat: 0, 
+            userLng: 0,
+            videoId: null
+        };
+    }
+
+    logOut(){
+        firebase.auth().signOut();
     }
 
     loadNearbyPosts(){
@@ -143,6 +157,7 @@ class HomeScreen extends React.Component {
                     ))}
                 </Pane>
                 <Pane minSize="40%">
+                    <button onClick={this.logOut}>Log Out</button>
                     <VideoPane id="video" />
                 </Pane>
             </SplitPane>
@@ -151,4 +166,4 @@ class HomeScreen extends React.Component {
 
 }
 
-export default HomeScreen;
+export default withRouter(HomeScreen);

@@ -2,25 +2,23 @@ import React, { Component } from "react"
 import logo from '../logo.svg';
 import '../App.css';
 
+import { useHistory } from "react-router-dom";
+
 // 404 page
-class NotFoundScreen extends React.Component{
+const NotFoundScreen = () => {
+	const history = useHistory();
 
-	constructor (props){
-		super(props);
+	function gotoHome (){
+		history.push("/home");
 	}
 
-	returnHome = () => {
-		this.props.onChangeScreen("home");
-	}
+	return (
+		<div>
+			<p>Error 404 - Could not find that page.</p>
+			<button onClick={this.returnHome}>Return to Home</button>
+		</div>
+	);
 
-	render(){
-		return (
-			<div>
-				<p>Error 404 - Could not find that page.</p>
-				<button onClick={this.returnHome}>Return to Home</button>
-			</div>
-		);
-	}
 }
 
 export default NotFoundScreen;

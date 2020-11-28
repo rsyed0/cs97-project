@@ -2,6 +2,10 @@ import React, { Component } from "react"
 import logo from './logo.svg';
 import './App.css';
 
+import { BrowserRouter as Router, Route } from "react-router-dom";
+import PrivateRoute from "./PrivateRoute";
+import { AuthProvider } from "./firebaseauth";
+
 import LandingScreen from './screens/landing';
 import LoginScreen from './screens/login';
 import SignupScreen from './screens/signup';
@@ -10,7 +14,7 @@ import UploadScreen from './screens/upload';
 import ProfileScreen from './screens/profile';
 import NotFoundScreen from './screens/notfound';
 
-class App extends React.Component{
+/*class App extends React.Component{
     constructor (props){
         super(props);
         this.state = {
@@ -57,6 +61,24 @@ class App extends React.Component{
             );
         }
     }
-}
+}*/
+
+const App = () => {
+    return (
+        <AuthProvider>
+            <Router>
+                <div>
+                    <PrivateRoute exact path="/home" component={HomeScreen} />
+                    <PrivateRoute exact path="/upload" component={UploadScreen} />
+                    <PrivateRoute exact path="/profile" component={ProfileScreen} />
+                    <Route exact path="/notfound" component={NotFoundScreen} />
+                    <Route exact path="/" component={LandingScreen} />
+                    <Route exact path="/login" component={LoginScreen} />
+                    <Route exact path="/signup" component={SignupScreen} />
+                </div>
+            </Router>
+        </AuthProvider>
+    );
+};
 
 export default App;

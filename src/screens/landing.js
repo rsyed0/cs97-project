@@ -1,30 +1,29 @@
-import React, { Component } from "react"
+import React from "react"
 import logo from '../logo.svg';
 import '../App.css';
 
+import { useHistory } from "react-router-dom";
+import { withRouter } from "react-router";
+
 // landing page
-class LandingScreen extends React.Component {
-	constructor (props){
-		super(props);
+const LandingScreen = () => {
+	const history = useHistory();
+
+	function gotoSignup (){
+		history.push("/signup");
 	}
 
-	gotoSignup = () => {
-		this.props.onChangeScreen("signup");
+	function gotoLogin (){
+		history.push("/login");
 	}
 
-	gotoLogin = () => {
-		this.props.onChangeScreen("login");
-	}
-
-	render(){
-		return (
-			<div>
-				<h1>Welcome to the CS 97 Project</h1>
-				<button onClick={this.gotoSignup}>Sign Up</button>
-				<button onClick={this.gotoLogin}>Log In</button>
-			</div>
-		);
-	}
+	return (
+		<div>
+			<h1>Welcome to the CS 97 Project</h1>
+			<button onClick={gotoSignup}>Sign Up</button>
+			<button onClick={gotoLogin}>Log In</button>
+		</div>
+	);
 }
 
-export default LandingScreen;
+export default withRouter(LandingScreen);

@@ -1,41 +1,48 @@
-import React, { Component } from "react"
+import React, { Component, useCallback } from "react";
 
 import firebase from "../firebase";
 
+import { useHistory } from "react-router-dom";
+import { withRouter } from "react-router";
+
 // class for signing up new user
-class SignupScreen extends React.Component {
+// from https://github.com/satansdeer/react-firebase-auth/blob/master/src/SignUp.js
+const SignupScreen = () => {
+	const history = useHistory();
 
-	constructor (props){
-		super(props);
+	const handleSignUp = useCallback(async event => {
+		event.preventDefault();
+		const { email, password } = event.target.elements;
+		try {
+			await firebase.auth().createUserWithEmailAndPassword(email.value, password.value);
+			// TODO create default user data in firestore
+			history.push("/home");
+		} catch (error) {
+			alert(error);
+		}
+	}, [history]);
 
-		this.state = {
-			username: "",
-			password: ""
-		};
-
-		this.handleSubmit = this.handleSubmit.bind(this);
+	function gotoLanding (){
+		history.push("/");
 	}
 
-	handleSubmit(event) {
-		// TODO setup firebase auth, link with this
-		// entered username and password are in this.state
-	}
-
-	render(){
-        return (
-        	// form for collecting username/password from user
-        	<form onSubmit={this.handleSubmit}>
-	            <label for="username">Username:</label><br />
-				<input type="text" id="username" name="username" value={this.state.username} /><br />
-
-				<label for="password">Password:</label><br />
-				<input type="password" id="password" name="password" value={this.state.password} /><br />
-
-				<input type="submit" value="Submit" />
+	return (
+		<div>
+			<h1>Sign up</h1>
+			<form onSubmit={handleSignUp}>
+				<label>
+					Email
+					<input name="email" type="email" placeholder="Email" />
+				</label>
+				<label>
+					Password
+					<input name="password" type="password" placeholder="Password" />
+				</label>
+				<button type="submit">Sign Up</button>
 			</form>
-        );
-    }
+			<button onClick={gotoLanding}>Back</button>
+		</div>
+	);
+};
 
-}
-
-export default SignupScreen;
+export default withRouter(SignupScreen);

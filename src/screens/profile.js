@@ -1,16 +1,22 @@
-import React, { Component } from "react"
+import React from "react"
 
 import firebase from "../firebase";
 
+import { useHistory } from "react-router-dom";
+import { withRouter } from "react-router";
+
+// TODO set up firestore user data, link with this
 // class for viewing profile of another user
-class ProfileScreen extends React.Component {
+const ProfileScreen = () => {
+	const history = useHistory();
 
-	render(){
-        return (
-            <div> </div>
-        );
-    }
+	function gotoHome(){
+		history.push("/home");
+	}
 
+	return (
+		<div></div>
+	);
 }
 
-export default ProfileScreen;
+export default withRouter(ProfileScreen);
