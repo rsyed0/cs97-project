@@ -19,7 +19,6 @@ class ProfileScreen extends React.Component {
 			numFollowing: 0,
 			numVideos: 0,
 			isLoggedUserFollowing: false,
-			canFollow: false,
 		};
 	}
 
@@ -27,13 +26,8 @@ class ProfileScreen extends React.Component {
 		// get ID of profile to be viewed from link
 		var { profileId } = this.props.match.params;
 		profileId = profileId.substring(1);
-
-		// get logged in user object
-		const currentUser = firebase.auth().currentUser;
-
 		this.setState({
 			profileId: profileId,
-			canFollow: (profileId !== currentUser.uid),
 		});
 
 		const context = this;
@@ -66,10 +60,8 @@ class ProfileScreen extends React.Component {
 
 		if (!currentUser){
 			// this should be blocked anyway by PrivateRoute in App.js
-			alert("Not logged in");
 			//return false;
 		} else if (currentUser.uid === this.state.profileId){
-			// this should be blocked anyway
 			alert("You can't follow yourself");
 			//return false;
 		} else {
@@ -87,18 +79,18 @@ class ProfileScreen extends React.Component {
 		}
 	}
 
-	/* TODO show feed of this user's videos in "profile-posts" */
 	render (){
 		if (!this.state.profileId){
 			return (<div></div>);
 		} else {
+			/* TODO show feed of this user's videos in "profile-posts" */
 			return (
 				<div>
 					<div id="profile">
 						<h1>User ID: {this.state.profileId}</h1>
 						<h2>User Email: {this.state.profileEmail}</h2>
 						<p>{this.state.numFollowers} followers, {this.state.numFollowing} following, {this.state.numVideos} videos</p>
-						{this.state.canFollow ? <button id="follow-user-btn" onClick={this.followUser}>Follow User</button> : null}
+						<button id="follow-user-btn" onClick={this.followUser}>Follow User</button>
 						<button id="go-home-from-profile-btn" onClick={this.gotoHome}>Back</button>
 					</div>
 					<div id="profile-posts">
