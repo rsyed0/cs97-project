@@ -54,7 +54,7 @@ class ProfileScreen extends React.Component {
 		this.props.history.push("/home");
 	}
 
-	followUser(){
+	followUser = e => {
 		// get logged in user object
 		const currentUser = firebase.auth().currentUser;
 
@@ -67,8 +67,8 @@ class ProfileScreen extends React.Component {
 		} else {
 			const ref = firebase.firestore().collection("users");
 
-			ref.doc(currentUser.uid).collection("following").add(this.state.profileId);
-			ref.doc(this.state.profileId).collection("followers").add(currentUser.uid);
+			ref.doc(currentUser.uid).collection("following").add({userId: this.state.profileId});
+			ref.doc(this.state.profileId).collection("followers").add({userId: currentUser.uid});
 
 			ref.doc(currentUser.uid).update({
 				numFollowing: firebase.firestore.FieldValue.increment(1),
