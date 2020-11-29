@@ -14,6 +14,13 @@ const UploadScreen = () => {
 		history.push("/home");
 	}
 
+	function uploadVideoFile(){
+		// check if file matches accepted formats
+		// auto-ID video, store with Firebase Storage
+		// log video in posts and under user in Firestore
+		// use FieldValue.increment(1) to update numVideos
+	}
+
 	return (
 		<div></div>
 	);

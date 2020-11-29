@@ -10,12 +10,38 @@ import { withRouter } from "react-router";
 const SignupScreen = () => {
 	const history = useHistory();
 
+	function createDefaultUserData(email){
+		const ref = firebase.firestore().collection("users");
+
+		// use FirebaseUser id, not random/auto
+		const currentUser = firebase.auth().currentUser;
+		if (!currentUser){
+			return false;
+		} else {
+			ref.doc(currentUser.uid).set({
+				email: email,
+				userId: currentUser.uid,
+				numFollowers: 0,
+				numFollowing: 0,
+				numVideos: 0
+			});
+			ref.doc(currentUser.uid).collection("followers").add("");
+			ref.doc(currentUser.uid).collection("following").add("");
+			ref.doc(currentUser.uid).collection("videos").add("");
+		}
+
+		return true;
+	}
+
 	const handleSignUp = useCallback(async event => {
 		event.preventDefault();
 		const { email, password } = event.target.elements;
 		try {
 			await firebase.auth().createUserWithEmailAndPassword(email.value, password.value);
-			// TODO create default user data in firestore
+
+			// create default user data in firestore
+			createDefaultUserData(email);
+
 			history.push("/home");
 		} catch (error) {
 			alert(error);

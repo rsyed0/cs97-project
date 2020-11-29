@@ -3,7 +3,7 @@ import SplitPane, { Pane } from 'react-split-pane';
 
 import { usePosition } from 'use-position';
 
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 import { withRouter } from "react-router";
 //import { Redirect, withRouter } from "react-router";
 
@@ -143,6 +143,28 @@ class HomeScreen extends React.Component {
         });
     }
 
+    convertTime(timestamp){
+        var unixSecDelay = Math.round((new Date()).getTime() / 1000) - timestamp;
+
+        var mult = [60,60,24,7,4,12];
+        var names = ['s','m','h','d','w','mo'];
+        var bound = 60;
+        var divider = 1;
+
+        var i;
+        for (i = 0; i < mult.length; i++) {
+            if (unixSecDelay < bound){
+                var delay = Math.round(unixSecDelay/divider);
+                return delay.toString() + names[i];
+            }
+            divider = divider*mult[i];
+            bound = bound*mult[i+1];
+        }
+        
+        var delay = Math.round(unixSecDelay/31540000);
+        return delay.toString() + 'yr';
+    }
+
     // TODO use .map() method with firebase to load posts dynamically
     // from https://github.com/samfromaway/firebase-tutorial/blob/master/src/GetFirebase.js
 	render(){
@@ -151,7 +173,10 @@ class HomeScreen extends React.Component {
                 <Pane minSize="60%">
                     {this.state.posts.map((post) => (
                         <div className="post" key={post.videoId}>
-                            <h1>Video post by {post.userId} at {post.timestamp} from ({post.lat},{post.lng})</h1>
+                            <h2>
+                                Video post {this.convertTime(post.timestamp)} ago 
+                                by <Link to={"/profile/:"+post.userId}>{post.userId}</Link> from ({post.lat},{post.lng})
+                            </h2>
                             <p>{post.likes} likes</p>
                         </div>
                     ))}
