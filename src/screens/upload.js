@@ -1,8 +1,10 @@
-import React, {useContext} from "react"
+import React, {useContext, useState, useEffect} from "react"
 
 import firebase from "../firebase";
 import { AuthContext } from "../firebaseauth";
-import { Typography, Button, Form, message, Input, Icon } from 'antd';
+import { Typography, Button, Form, message, Input } from 'antd';
+import { UploadOutlined } from '@ant-design/icons';
+import Dropzone from 'react-dropzone'
 
 import { useHistory } from "react-router-dom";
 import { withRouter } from "react-router";
@@ -12,7 +14,9 @@ import { withRouter } from "react-router";
 const UploadScreen = () => {
 	const history = useHistory();
 	const { Title } = Typography;
-	const  { TextArea } = Input;
+    const  { TextArea } = Input;
+    
+    
 
 	function gotoHome(){
 		history.push("/home");
@@ -44,7 +48,7 @@ const UploadScreen = () => {
 
         <Form onSubmit={onSubmit}>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                {/* <Dropzone 
+                <Dropzone 
                     multiple={false}
                     maxSize={800000000}>
                     {({ getRootProps, getInputProps }) => (
@@ -52,17 +56,17 @@ const UploadScreen = () => {
                             {...getRootProps()}
                         >
                             <input {...getInputProps()} />
-                            <Icon type="plus" style={{ fontSize: '3rem' }} />
+                            <UploadOutlined style={{ fontSize: '3rem' }} />
 
                         </div>
                     )}
-                </Dropzone> */}
+                </Dropzone> 
 
                 {/* {thumbnail !== "" &&
                     <div>
                         <img src={`http://localhost:5000/${thumbnail}`} alt="haha" />
                     </div>
-                } */}
+              */} 
             </div>
 
             <br /><br />
