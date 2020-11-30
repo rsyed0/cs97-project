@@ -96,26 +96,28 @@ const UploadScreen = () => {
               */} 
             </div>
 
-            <br /><br />
+            <div style={{ margin: '24px 0' }} />
             <label>Title</label>
-            <Input
+            <br></br>
+            <Input size="small" placeholder="video title" 
                 onChange={handleChangeTitle}
                 value={title}
             />
-            <br /><br />
+            <div style={{ margin: '24px 0' }} />
+
             <label>Description</label>
-            <TextArea
+            <TextArea placeholder="video description" showCount maxLength={100}
                 onChange={handleChangeDecsription}
                 value={Description}
             />
-            <br /><br />
+           <div style={{ margin: '24px 0' }} />
 
             <select onChange={handleChangeTwo}>
                 {Catogory.map((item, index) => (
                     <option key={index} value={item.label}>{item.label}</option>
                 ))}
             </select>
-            <br /><br />
+            <div style={{ margin: '24px 0' }} />
 
             <Button type="primary" size="large" onClick={onSubmit}>
                 Submit
