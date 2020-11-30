@@ -68,9 +68,9 @@ const App = () => {
         <AuthProvider>
             <Router>
                 <div>
-                    <PrivateRoute exact path="/home" component={HomeScreen} />
+                    <Route exact path="/home" component={HomeScreen} />
                     <Route exact path="/upload" component={UploadScreen} />
-                    <PrivateRoute exact path="/profile/:profileId" component={ProfileScreen} />
+                    <Route exact path="/profile/:profileId" component={ProfileScreen} />
                     <Route exact path="/notfound" component={NotFoundScreen} />
                     <Route exact path="/" component={LandingScreen} />
                     <Route exact path="/login" component={LoginScreen} />
