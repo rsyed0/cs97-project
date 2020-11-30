@@ -69,7 +69,7 @@ const App = () => {
             <Router>
                 <div>
                     <PrivateRoute exact path="/home" component={HomeScreen} />
-                    <PrivateRoute exact path="/upload" component={UploadScreen} />
+                    <Route exact path="/upload" component={UploadScreen} />
                     <PrivateRoute exact path="/profile/:profileId" component={ProfileScreen} />
                     <Route exact path="/notfound" component={NotFoundScreen} />
                     <Route exact path="/" component={LandingScreen} />

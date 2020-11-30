@@ -16,12 +16,17 @@ const LandingScreen = () => {
 	function gotoLogin (){
 		history.push("/login");
 	}
+	
+	function goToUpload (){
+		history.push("/upload");
+	}
 
 	return (
 		<div id="landing-page-content">
 			<h1>Welcome to the CS 97 Project</h1>
 			<button onClick={gotoSignup}>Sign Up</button>
 			<button onClick={gotoLogin}>Log In</button>
+			<button onClick={goToUpload}>Upload</button>
 		</div>
 	);
 }

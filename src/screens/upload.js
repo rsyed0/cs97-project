@@ -1,6 +1,7 @@
-import React from "react"
+import React, {useContext} from "react"
 
 import firebase from "../firebase";
+import { AuthContext } from "../firebaseauth";
 
 import { useHistory } from "react-router-dom";
 import { withRouter } from "react-router";
@@ -14,6 +15,8 @@ const UploadScreen = () => {
 		history.push("/home");
 	}
 
+	const { currentUser } = useContext(AuthContext);
+
 	function uploadVideoFile(){
 		// check if file matches accepted formats
 		// auto-ID video, store with Firebase Storage
@@ -21,8 +24,17 @@ const UploadScreen = () => {
 		// use FieldValue.increment(1) to update numVideos
 	}
 
+	function gotoLanding (){
+		history.push("/");
+	}
+
+
 	return (
-		<div></div>
+		<div>
+			<h1>Upload Video</h1>
+			<button onClick={uploadVideoFile}>Upload</button>
+			<button onClick={gotoLanding}>Back</button>
+		</div>
 	);
 }
 
