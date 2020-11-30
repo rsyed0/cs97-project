@@ -41,9 +41,9 @@ const UploadScreen = () => {
         setDescription(event.currentTarget.value)
     }
 
-    // const handleChangeTwo = (event) => {
-    //     setCategories(event.currentTarget.value)
-    // }
+    const handleChangeTwo = (event) => {
+        setCategories(event.currentTarget.value)
+    }
 
 	function gotoHome(){
 		history.push("/home");
@@ -110,16 +110,16 @@ const UploadScreen = () => {
             />
             <br /><br />
 
-            <select>
+            <select onChange={handleChangeTwo}>
                 {Catogory.map((item, index) => (
                     <option key={index} value={item.label}>{item.label}</option>
                 ))}
             </select>
             <br /><br />
 
-            {/* <Button type="primary" size="large" onClick={onSubmit}>
+            <Button type="primary" size="large" onClick={onSubmit}>
                 Submit
-            </Button> */}
+            </Button>
 
         </Form>
     </div>
