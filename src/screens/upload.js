@@ -15,8 +15,35 @@ const UploadScreen = () => {
 	const history = useHistory();
 	const { Title } = Typography;
     const  { TextArea } = Input;
+
+    const Catogory = [
+        { value: 0, label: "Skating" },
+        { value: 0, label: "Basketball" },
+        { value: 0, label: "Nature" },
+        { value: 0, label: "Soccer" },
+        { value: 0, label: "Football" },
+        { value: 0, label: "Hockey" },
+        { value: 0, label: "Baseball" },
+    ]
     
-    
+    const [title, setTitle] = useState("");
+    const [Description, setDescription] = useState("");
+    const [privacy, setPrivacy] = useState(0)
+    const [Categories, setCategories] = useState("Film & Animation")
+
+    const handleChangeTitle = ( event ) => {
+        setTitle(event.currentTarget.value)
+    }
+
+    const handleChangeDecsription = (event) => {
+        console.log(event.currentTarget.value)
+
+        setDescription(event.currentTarget.value)
+    }
+
+    // const handleChangeTwo = (event) => {
+    //     setCategories(event.currentTarget.value)
+    // }
 
 	function gotoHome(){
 		history.push("/home");
@@ -72,29 +99,22 @@ const UploadScreen = () => {
             <br /><br />
             <label>Title</label>
             <Input
-                //  onChange={handleChangeTitle}
-                //  value={title}
+                onChange={handleChangeTitle}
+                value={title}
             />
             <br /><br />
             <label>Description</label>
             <TextArea
-                //  onChange={handleChangeDecsription}
-                //  value={Description}
+                onChange={handleChangeDecsription}
+                value={Description}
             />
             <br /><br />
 
-            {/* <select onChange={handleChangeOne}>
-                {Private.map((item, index) => (
-                    <option key={index} value={item.value}>{item.label}</option>
-                ))}
-            </select> */}
-            <br /><br />
-
-            {/* <select onChange={handleChangeTwo}>
+            <select>
                 {Catogory.map((item, index) => (
                     <option key={index} value={item.label}>{item.label}</option>
                 ))}
-            </select> */}
+            </select>
             <br /><br />
 
             {/* <Button type="primary" size="large" onClick={onSubmit}>
