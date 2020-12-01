@@ -11,6 +11,7 @@ import { withRouter } from "react-router";
 
 // TODO setup firebase storage, link with this
 // class for uploading a video
+
 const UploadScreen = () => {
     
     const history = useHistory();
@@ -29,7 +30,7 @@ const UploadScreen = () => {
     
     const [title, setTitle] = useState("");
     const [Description, setDescription] = useState("");
-    const [Categories, setCategories] = useState("Film & Animation")
+    const [Categories, setCategories] = useState("")
 
     const handleChangeTitle = ( event ) => {
         setTitle(event.currentTarget.value)
@@ -72,50 +73,11 @@ const UploadScreen = () => {
       }
     
     //TO DO: implement check that file is a video file and matches accepted formats
+    //figure out where to store video in a place where we can later retrieve it 
     const onDrop = ( files ) => {
         
         const file = files[0];
-        const post_ref = firebase.firestore().collection("posts");
-        const user_ref = firebase.firestore().collection("users");
         
-        const randomID = firestoreAutoId();
-
-		// use FirebaseUser id, not random/auto
-        const currentUser = firebase.auth().currentUser;
-        const UID = currentUser.uid;
-
-		if (!currentUser){
-			return false;
-        } 
-        else {
-            alert('jawn a')
-
-            var postData = {
-                postID: randomID,
-                userId: UID,
-                timestamp: null,
-                lat: null,
-                lng: null,
-                likes: 0,
-                desciption: null,
-                sport: null
-            }
-
-            post_ref.add(postData)
-            .then(function() {
-                alert("Document uploaded succesfully");
-            })
-            .catch(function() {
-               alert("ERROR");
-            });
-            
-            //submit button, has not been clicked yet. Video hasn't officially "posted". So we set this to false
-            //!!!BELOW STILL NEEDS TO BE TESTED. message to fix signup.js
-			user_ref.doc(currentUser.uid).collection("videos").doc(randomID).update({
-                postId: randomID,
-                posted: false
-            });
-		}
     }
 
 	function gotoLanding (){
@@ -131,17 +93,66 @@ const UploadScreen = () => {
     const onSubmit = () => {
         var userLat = null, userLong = null;
 
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(showPosition);
-            alert("hi")
-          } else {
-           alert("Geolocation is not supported by this browser.");
-          }
+        // if (navigator.geolocation) {
+        //     navigator.geolocation.getCurrentPosition(showPosition);
+        //     alert("hi")
+        //   } else {
+        //    alert("Geolocation is not supported by this browser.");
+        //   }
         
         // alert(userLat);
         // alert(userLong);
 
+        const post_ref = firebase.firestore().collection("posts");
+        
+        const randomID = firestoreAutoId();
 
+		// use FirebaseUser id, not random/auto
+        const currentUser = firebase.auth().currentUser;
+        const UID = currentUser.uid;
+
+		if (!currentUser){
+			return false;
+        } 
+        else {
+
+            var postData = {
+                postID: randomID,
+                userId: UID,
+                timestamp: null,
+                lat: null,
+                lng: null,
+                likes: 0,
+                desciption: Description,
+                sport: Categories
+            }
+
+            post_ref.add(postData)
+            .then(function() {
+                alert("Document uploaded succesfully");
+            })
+            .catch(function() {
+               alert("ERROR");
+            });
+            
+            //submit button, has not been clicked yet. Video hasn't officially "posted". So we set this to false
+            //!!!BELOW STILL NEEDS TO BE TESTED. message to fix signup.js
+            // const user_doc = firebase.firestore().collection("users").doc(currentUser.uid);
+			// user_doc.collection("videos").doc(randomID).update({
+            //     postId: randomID,
+            //     posted: false
+            // });
+
+            // //increase number of videos by 1
+            // var vidNum;
+            // user_doc.get().then(doc => {
+            //     vidNum = doc.data().numVideos;
+            // })
+
+            // user_doc.set({
+			// 	numVideos: vidNum
+			// });
+		}
         // const user_ref = firebase.firestore().collection("users");
         // const post_ref = firebase.firestore().collection("posts");
 
