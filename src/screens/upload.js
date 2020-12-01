@@ -27,14 +27,9 @@ const UploadScreen = () => {
         { value: 0, label: "Hockey" },
         { value: 0, label: "Baseball" },
     ]
-    
-    const [title, setTitle] = useState("");
+
     const [Description, setDescription] = useState("");
     const [Categories, setCategories] = useState("")
-
-    const handleChangeTitle = ( event ) => {
-        setTitle(event.currentTarget.value)
-    }
 
     const handleChangeDecsription = (event) => {
         console.log(event.currentTarget.value)
@@ -59,6 +54,7 @@ const UploadScreen = () => {
         // use FieldValue.increment(1) to update numVideos
     }
 
+    //generates random firestore id
     const firestoreAutoId = () => {
         const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
       
@@ -84,27 +80,12 @@ const UploadScreen = () => {
 		history.push("/");
     }
     
-    function showPosition(position) {
-        var userLat = position.coords.latitude;
-        alert(userLat);
-       
-      }
 
     const onSubmit = () => {
         var userLat = null, userLong = null;
 
-        // if (navigator.geolocation) {
-        //     navigator.geolocation.getCurrentPosition(showPosition);
-        //     alert("hi")
-        //   } else {
-        //    alert("Geolocation is not supported by this browser.");
-        //   }
-        
-        // alert(userLat);
-        // alert(userLong);
-
+        //get reference to posts collection in firestore and generate random postID
         const post_ref = firebase.firestore().collection("posts");
-        
         const randomID = firestoreAutoId();
 
 		// use FirebaseUser id, not random/auto
@@ -120,12 +101,23 @@ const UploadScreen = () => {
             //gives formatted time
             //alert(new Intl.DateTimeFormat('en-US', {year: 'numeric', month: '2-digit',day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit'}).format(time_stamp));
 
+            if (navigator.geolocation) {
+                alert("F")
+                navigator.geolocation.watchPosition(function(position) {
+                  alert("hey");
+                  alert(position.coords.latitude);
+                  alert(position.coords.longitude);
+                  userLat = position.coords.latitude;
+                  userLong = position.coords.longitude;
+                });
+            }
+
             var postData = {
                 postID: randomID,
                 userId: UID,
                 timestamp: time_stamp,
-                lat: null,
-                lng: null,
+                lat: userLat,
+                lng: userLong,
                 likes: 0,
                 desciption: Description,
                 sport: Categories
@@ -209,15 +201,8 @@ const UploadScreen = () => {
               */} 
             </div>
 
-            <div style={{ margin: '24px 0' }} />
-            <label>Title</label>
-            <br></br>
-            <Input size="small" placeholder="video title" 
-                onChange={handleChangeTitle}
-                value={title}
-            />
-            <div style={{ margin: '24px 0' }} />
 
+            <div style={{ margin: '24px 0' }} />
             <label>Description</label>
             <TextArea placeholder="video description" showCount maxLength={100}
                 onChange={handleChangeDecsription}
@@ -225,12 +210,14 @@ const UploadScreen = () => {
             />
            <div style={{ margin: '24px 0' }} />
 
+            <label>Sport</label>
+            <br></br>
             <select onChange={handleChangeTwo} value={Categories}>
                 {Catogory.map((item, index) => (
                     <option key={index} value={item.label}>{item.label}</option>
                 ))}
             </select>
-            <div style={{ margin: '24px 0' }} />
+            <div style={{ margin: '40px 0' }} />
 
             <Button type="primary" size="large" onClick={onSubmit}>
                 Submit
