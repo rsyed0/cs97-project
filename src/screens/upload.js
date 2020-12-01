@@ -115,11 +115,15 @@ const UploadScreen = () => {
 			return false;
         } 
         else {
+            const time_stamp = Date.now(); // unformatted time stamp
+            
+            //gives formatted time
+            //alert(new Intl.DateTimeFormat('en-US', {year: 'numeric', month: '2-digit',day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit'}).format(time_stamp));
 
             var postData = {
                 postID: randomID,
                 userId: UID,
-                timestamp: null,
+                timestamp: time_stamp,
                 lat: null,
                 lng: null,
                 likes: 0,
