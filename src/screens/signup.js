@@ -25,9 +25,9 @@ const SignupScreen = () => {
 				numFollowing: 0,
 				numVideos: 0
 			});
-			ref.doc(currentUser.uid).collection("followers").add("");
-			ref.doc(currentUser.uid).collection("following").add("");
-			ref.doc(currentUser.uid).collection("videos").add("");
+			ref.doc(currentUser.uid).collection("followers").add({userId: ""});
+			ref.doc(currentUser.uid).collection("following").add({userId: ""});
+			ref.doc(currentUser.uid).collection("videos").add({postId: ""});
 		}
 
 		return true;
@@ -40,7 +40,7 @@ const SignupScreen = () => {
 			await firebase.auth().createUserWithEmailAndPassword(email.value, password.value);
 
 			// create default user data in firestore
-			createDefaultUserData(email);
+			createDefaultUserData(email.value);
 
 			history.push("/home");
 		} catch (error) {

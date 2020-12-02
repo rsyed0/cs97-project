@@ -13,16 +13,12 @@ import firebase from "../firebase";
 // won't show video, just metadata, will show video on click
 // child of FeedPane
 /*class Post extends React.Component {
-
     constructor(props){
         super(props);
         this.state = {};
     }
-
     onClick(){
-
     }
-
     render(){
         return (
             <div>
@@ -35,11 +31,9 @@ import firebase from "../firebase";
 // class to show feed of nearby videos
 // pane is part of the HomeScreen
 /*class FeedPane extends React.Component {
-
     render(){
         return ();
     }
-
 }*/
 
 /*export const UserLocation = () => {
@@ -50,7 +44,6 @@ import firebase from "../firebase";
         accuracy,
         error,
     } = usePosition();
-
     return (
         <code>
             latitude: {latitude}<br/>
@@ -95,6 +88,7 @@ class HomeScreen extends React.Component {
     }
 
     logOut(){
+        this.props.history.push("/");
         firebase.auth().signOut();
     }
 
@@ -143,6 +137,10 @@ class HomeScreen extends React.Component {
         });
     }
 
+    viewLoggedUserProfile = e => {
+        this.props.history.push("/profile/:"+firebase.auth().currentUser.uid);
+    }
+
     convertTime(timestamp){
         var unixSecDelay = Math.round((new Date()).getTime() / 1000) - timestamp;
 
@@ -182,6 +180,7 @@ class HomeScreen extends React.Component {
                     ))}
                 </Pane>
                 <Pane minSize="40%">
+                    <button onClick={this.viewLoggedUserProfile}>View My Profile</button>
                     <button onClick={this.logOut}>Log Out</button>
                     <VideoPane id="video" />
                 </Pane>

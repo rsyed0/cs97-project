@@ -17,7 +17,7 @@ const LoginScreen = () => {
 			const { email, password } = event.target.elements;
 			try {
 				await firebase.auth().signInWithEmailAndPassword(email.value, password.value);
-				history.push("/");
+				history.push("/home");
 			} catch (error) {
 				alert(error);
 			}
