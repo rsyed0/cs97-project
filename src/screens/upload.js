@@ -21,7 +21,7 @@ class UploadScreen extends React.Component {
         this.state = {
             userLat: null,
             userLng: null,
-            videoId: null,
+            postID: null,
             Description: "",
             Categories: "", 
             Catogory: [
@@ -121,7 +121,7 @@ class UploadScreen extends React.Component {
                     const UID = currentUser.uid; //get userID
                     
                     var postData = {
-                        postID: this.state.postID,
+                        postId: this.state.postID,
                         userId: UID,
                         timestamp: time_stamp,
                         lat: this.state.userLat,
@@ -143,7 +143,7 @@ class UploadScreen extends React.Component {
                     const user_doc = firebase.firestore().collection("users").doc(UID);
                     user_doc.collection("videos").doc(this.state.postID).set({
                         postId: this.state.postID,
-                        fileName: currFile.name
+                        fileName: currFile.name,
                     });
 
                     //increase number of videos by 1
@@ -158,7 +158,7 @@ class UploadScreen extends React.Component {
                     });
 
                     //store video file in firebase storage inside a post ID folder
-                    const folderName = this.state.videoId;
+                    const folderName = this.state.postID;
                     const storageRef = firebase.storage().ref(`${folderName}/${currFile.name}`)
                     var uploadTask = storageRef.put(currFile)
                     // uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
