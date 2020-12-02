@@ -135,21 +135,23 @@ class UploadScreen extends React.Component {
                     alert("ERROR");
                 })
 
-                // //add post
-                // const user_doc = firebase.firestore().collection("users").doc(UID);
+                //add post
+                const user_doc = firebase.firestore().collection("users").doc(UID);
                 // user_doc.collection("videos").doc(this.state.postID).add({
                 //     postId: this.state.postID,
                 // });
 
-                // //increase number of videos by 1
-                // var vidNum;
-                // user_doc.get().then(doc => {
-                //     vidNum = doc.data().numVideos;
-                // })
+                //increase number of videos by 1
 
-                // user_doc.set({
-            	//     numVideos: vidNum
-                // });
+                user_doc.get().then(function(doc) {
+                    console.log(doc.data());
+                    var vidNum = doc.data().numVideos;
+                    
+                    vidNum++;
+                    user_doc.update({
+            	        numVideos: vidNum
+                    });
+                });
             });
         }
     }
