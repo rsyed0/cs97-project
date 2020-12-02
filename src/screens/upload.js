@@ -1,6 +1,7 @@
 import React, { Component } from "react"
 
 import firebase from "../firebase";
+import 'firebase/storage';
 import { AuthContext } from "../firebaseauth";
 import { Typography, Button, Form, message, Input } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
@@ -33,7 +34,8 @@ class UploadScreen extends React.Component {
                 { value: 0, label: "Baseball" },
             ],
             Title: Typography,
-            TextArea: Input
+            TextArea: Input,
+            file: null
         };
         this.onSubmit = this.onSubmit.bind(this)
         this.onDrop = this.onDrop.bind(this)
@@ -79,9 +81,9 @@ class UploadScreen extends React.Component {
     //TO DO: implement check that file is a video file and matches accepted formats
     //figure out where to store video in a place where we can later retrieve it 
     onDrop = ( files ) => {
-        
-        const file = files[0];
-        
+        this.setState({
+            file: files[0]
+        });
     }
     
 
@@ -107,51 +109,72 @@ class UploadScreen extends React.Component {
         else {
             //gives formatted time
             //alert(new Intl.DateTimeFormat('en-US', {year: 'numeric', month: '2-digit',day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit'}).format(time_stamp));
-
-            navigator.geolocation.getCurrentPosition( (position) => {
-                this.setState({
-                  userLat: position.coords.latitude,
-                  userLng: position.coords.longitude,
-                });
-               
-                const time_stamp = Date.now(); // unformatted time stamp
-                const UID = currentUser.uid; //get userID
-                
-                var postData = {
-                    postID: this.state.postID,
-                    userId: UID,
-                    timestamp: time_stamp,
-                    lat: this.state.userLat,
-                    lng: this.state.userLng,
-                    likes: 0,
-                    desciption: this.state.Description,
-                    sport: this.state.Categories
-                }
-                post_ref.add(postData)
-                .then(function() {
-                    alert("Document uploaded succesfully");
-                })
-                .catch(function() {
-                    alert("ERROR");
-                })
-
-                //set video post with post ID
-                const user_doc = firebase.firestore().collection("users").doc(UID);
-                user_doc.collection("videos").doc(this.state.postID).set({
-                    postId: this.state.postID,
-                });
-
-                //increase number of videos by 1
-                user_doc.get().then(function(doc) {
-                    console.log(doc.data());
-                    var vidNum = doc.data().numVideos;
-                    
-                    vidNum++;
-                    user_doc.update({
-            	        numVideos: vidNum
+            const currFile = this.state.file;
+            if (currFile != null) {
+                navigator.geolocation.getCurrentPosition( (position) => {
+                    this.setState({
+                    userLat: position.coords.latitude,
+                    userLng: position.coords.longitude,
                     });
+                
+                    const time_stamp = Date.now(); // unformatted time stamp
+                    const UID = currentUser.uid; //get userID
+                    
+                    var postData = {
+                        postID: this.state.postID,
+                        userId: UID,
+                        timestamp: time_stamp,
+                        lat: this.state.userLat,
+                        lng: this.state.userLng,
+                        likes: 0,
+                        desciption: this.state.Description,
+                        sport: this.state.Categories,
+                        fileName: currFile.name
+                    }
+                    post_ref.add(postData)
+                    .then(function() {
+                        alert("Document uploaded succesfully");
+                    })
+                    .catch(function() {
+                        alert("ERROR");
+                    })
+
+                    //set video post with post ID
+                    const user_doc = firebase.firestore().collection("users").doc(UID);
+                    user_doc.collection("videos").doc(this.state.postID).set({
+                        postId: this.state.postID,
+                        fileName: currFile.name
+                    });
+
+                    //increase number of videos by 1
+                    user_doc.get().then(function(doc) {
+                        console.log(doc.data());
+                        var vidNum = doc.data().numVideos;
+                        
+                        vidNum++;
+                        user_doc.update({
+                            numVideos: vidNum
+                        });
+                    });
+
+                    //store video file in firebase storage inside a post ID folder
+                    const folderName = this.state.videoId;
+
+                    alert(currFile.name)
+
+                    const storageRef = firebase.storage().ref(`${folderName}/${currFile.name}`)
+                    var uploadTask = storageRef.put(currFile)
+                    // uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
+                    //     ()=>{
+                    //         var downloadURL = uploadTask.snapshot.downloadURL
+                    //     })
+
+                    this.goBack()
                 });
-            });
+            }
+            else {
+                alert("Error: upload video file")
+            }
         }
     }
         
