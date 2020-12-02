@@ -134,45 +134,24 @@ class UploadScreen extends React.Component {
                 .catch(function() {
                     alert("ERROR");
                 })
+
+                // //add post
+                // const user_doc = firebase.firestore().collection("users").doc(UID);
+                // user_doc.collection("videos").doc(this.state.postID).add({
+                //     postId: this.state.postID,
+                // });
+
+                // //increase number of videos by 1
+                // var vidNum;
+                // user_doc.get().then(doc => {
+                //     vidNum = doc.data().numVideos;
+                // })
+
+                // user_doc.set({
+            	//     numVideos: vidNum
+                // });
             });
-            
-            //submit button, has not been clicked yet. Video hasn't officially "posted". So we set this to false
-            //!!!BELOW STILL NEEDS TO BE TESTED. message to fix signup.js
-            // const user_doc = firebase.firestore().collection("users").doc(currentUser.uid);
-            // user_doc.collection("videos").doc(randomID).update({
-            //     postId: randomID,
-            //     posted: false
-            // });
-
-            // //increase number of videos by 1
-            // var vidNum;
-            // user_doc.get().then(doc => {
-            //     vidNum = doc.data().numVideos;
-            // })
-
-            // user_doc.set({
-            // 	numVideos: vidNum
-            // });
         }
-        // const user_ref = firebase.firestore().collection("users");
-        // const post_ref = firebase.firestore().collection("posts");
-
-        // // use FirebaseUser id, not random/auto
-        // const currentUser = firebase.auth().currentUser;
-        // if (!currentUser){
-        // 	return false;
-        // } else {
-        // 	user_ref.doc(currentUser.uid).set({
-        // 		email: email,
-        // 		userId: currentUser.uid,
-        // 		numFollowers: 0,
-        // 		numFollowing: 0,
-        // 		numVideos: 0
-        // 	});
-        // 	ref.doc(currentUser.uid).collection("followers").add("");
-        // 	ref.doc(currentUser.uid).collection("following").add("");
-        // 	ref.doc(currentUser.uid).collection("videos").add("");
-        // }
     }
         
     
