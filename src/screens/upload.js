@@ -159,9 +159,6 @@ class UploadScreen extends React.Component {
 
                     //store video file in firebase storage inside a post ID folder
                     const folderName = this.state.videoId;
-
-                    alert(currFile.name)
-
                     const storageRef = firebase.storage().ref(`${folderName}/${currFile.name}`)
                     var uploadTask = storageRef.put(currFile)
                     // uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
@@ -169,6 +166,7 @@ class UploadScreen extends React.Component {
                     //         var downloadURL = uploadTask.snapshot.downloadURL
                     //     })
 
+                    //go back to home page
                     this.goBack()
                 });
             }
