@@ -88,7 +88,7 @@ class HomeScreen extends React.Component {
     }
 
     logOut(){
-        this.props.history.push("/");
+        //this.props.history.push("/");  //should return to home screen
         firebase.auth().signOut();
     }
 
@@ -141,6 +141,10 @@ class HomeScreen extends React.Component {
         this.props.history.push("/profile/:"+firebase.auth().currentUser.uid);
     }
 
+    uploadVideo = e => {
+        this.props.history.push("/upload");
+    }
+
     convertTime(timestamp){
         var unixSecDelay = Math.round((new Date()).getTime() / 1000) - timestamp;
 
@@ -181,6 +185,7 @@ class HomeScreen extends React.Component {
                 </Pane>
                 <Pane minSize="40%">
                     <button onClick={this.viewLoggedUserProfile}>View My Profile</button>
+                    <button onClick={this.uploadVideo}>Upload Video</button>
                     <button onClick={this.logOut}>Log Out</button>
                     <VideoPane id="video" />
                 </Pane>

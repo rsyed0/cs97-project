@@ -154,6 +154,9 @@ class UploadScreen extends React.Component {
         }
     }
         
+    goBack = () => {
+        this.props.history.push("/home");
+    }
     
 
     render() {
@@ -208,6 +211,9 @@ class UploadScreen extends React.Component {
     
                 <Button type="primary" size="large" onClick={this.onSubmit}>
                     Submit
+                </Button>
+                <Button type="primary" size="large" onClick={this.goBack}>
+                    Cancel
                 </Button>
     
             </Form>
