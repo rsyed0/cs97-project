@@ -52,7 +52,7 @@ class UploadScreen extends React.Component {
 
     handleChangeTwo = (event) => {
         this.setState({
-            Categories: event.currentTarget.label
+            Categories: event.currentTarget.value
         });
     }
 
@@ -157,7 +157,16 @@ class UploadScreen extends React.Component {
                         });
                     });
 
-                    //store video file in firebase storage inside a post ID folder
+                    //can use the code below for grabbing file. Just need to figure out how:
+                    //for current user: get folderName(from postID) 
+                    //1) get current user id
+                    //2)look inside video folder(code above)  --> can loop through documents if needed
+                    //3)get postID and filename
+                    //4)search in storage
+                    //store time stamp in user video document as well?
+                    //loop? --> how to retrieve all posts?
+
+
                     const folderName = this.state.postID;
                     const storageRef = firebase.storage().ref(`${folderName}/${currFile.name}`)
                     var uploadTask = storageRef.put(currFile)
@@ -165,9 +174,9 @@ class UploadScreen extends React.Component {
                     //     ()=>{
                     //         var downloadURL = uploadTask.snapshot.downloadURL
                     //     })
-
+                    
                     //go back to home page
-                    this.goBack()
+                    //this.goBack()
                 });
             }
             else {
@@ -175,6 +184,33 @@ class UploadScreen extends React.Component {
             }
         }
     }
+
+    //Function to grab and display files uploaded to firestore. For testing purposes
+    // showImage = () => {
+    //     const currentUser = firebase.auth().currentUser;
+    //     const UID = currentUser.uid;
+
+    //     const user_doc = firebase.firestore().collection("users").doc(UID);
+    //     user_doc.collection("videos").doc(this.state.postID).get().then(function(doc) {
+    //         console.log(doc.data());
+            
+    //         const fileName = doc.data().fileName;
+    //         const folderName = doc.data().postId;
+    //         const storageRef2 = firebase.storage().ref();
+    //         const spaceRef = storageRef2.child(folderName + "/" + fileName);
+    //         storageRef2.child(folderName + "/" + fileName).getDownloadURL().then((url)=>{
+    //             console.log(url)
+    //             //You can use the url variable here as the url of the video 
+
+
+
+
+
+
+    //             document.getElementById("new-img").src = url;
+    //         })
+    //     });
+    // }
         
     goBack = () => {
         this.props.history.push("/home");
@@ -237,6 +273,12 @@ class UploadScreen extends React.Component {
                 <Button type="primary" size="large" onClick={this.goBack}>
                     Cancel
                 </Button>
+                {/* <br></br>
+                <Button onClick={this.showImage}>
+                    Image
+                </Button>
+                <br></br>
+                <img id="new-img" alt="testy"/> */}
     
             </Form>
         </div>
