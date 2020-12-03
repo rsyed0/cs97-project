@@ -26,7 +26,6 @@ class ProfileScreen extends React.Component {
 	componentDidMount(){
 		// get ID of profile to be viewed from link
 		var { profileId } = this.props.match.params;
-		profileId = profileId.substring(1);
 
 		// get logged in user object
 		const currentUser = firebase.auth().currentUser;

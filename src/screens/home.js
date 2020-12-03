@@ -104,7 +104,7 @@ class HomeScreen extends React.Component {
             querySnapshot.forEach((doc) => {
 
                 let data = doc.data();
-                console.log(data);
+                console.log('snapshot data', data);
 
                 let dist = Math.sqrt(Math.pow(Math.abs(this.state.userLat - data.lat),2) + 
                     Math.pow(Math.abs(this.state.userLng - data.lng),2));
@@ -112,12 +112,15 @@ class HomeScreen extends React.Component {
                 console.log("for post: lat: "+data.lat+", lng: "+data.lng);
                 console.log("dist from post: "+dist);
 
-                if (dist <= this.state.maxDist)
+                if (dist <= this.state.maxDist) {
                     posts.push(data);
+                }
 
             });
 
-            this.setState({posts: posts});
+            console.log('loadNearbyPosts', posts);
+
+            this.setState({ posts });
         });
 
     }
@@ -138,7 +141,7 @@ class HomeScreen extends React.Component {
     }
 
     viewLoggedUserProfile = e => {
-        this.props.history.push("/profile/:"+firebase.auth().currentUser.uid);
+        this.props.history.push("/profile/"+firebase.auth().currentUser.uid);
     }
 
     uploadVideo = e => {
@@ -174,10 +177,10 @@ class HomeScreen extends React.Component {
             <SplitPane split="horizontal" >
                 <Pane minSize="60%">
                     {this.state.posts.map((post) => (
-                        <div className="post" key={post.videoId}>
+                        <div className="post" key={post.postId}>
                             <h2>
-                                Video post {this.convertTime(post.timestamp)} ago 
-                                by <Link to={"/profile/:"+post.userId}>{post.userId}</Link> from ({post.lat},{post.lng})
+                            <Link to={"/playVideo/"+post.postId}>Video</Link> post {this.convertTime(post.timestamp)} ago 
+                                by <Link to={"/profile/"+post.userId}>{post.userId}</Link> from ({post.lat},{post.lng})
                             </h2>
                             <p>{post.likes} likes</p>
                         </div>

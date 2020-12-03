@@ -35,7 +35,7 @@ class UploadScreen extends React.Component {
             ],
             Title: Typography,
             TextArea: Input,
-            file: null
+            file: null  
         };
         this.onSubmit = this.onSubmit.bind(this)
         this.onDrop = this.onDrop.bind(this)
