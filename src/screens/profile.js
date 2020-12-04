@@ -70,11 +70,13 @@ class ProfileScreen extends React.Component {
         userRef.onSnapshot((querySnapshot) => {
 
             querySnapshot.forEach((doc) => {
-            	let postId = doc.data().postId;
+				let postId = doc.data().postId;
+				console.log(postId)
 
-            	if (postId != ""){
+            	if (postId !== ""){
 	            	postRef.doc(postId).onSnapshot((postSnapshot) => {
-	            		context.state.posts.push(postSnapshot.data());
+						console.log(postSnapshot.data())
+	            		context.state.profilePosts.push(postSnapshot.data());
 	            	});
 	            }
             });
@@ -146,11 +148,39 @@ class ProfileScreen extends React.Component {
 
 	/* TODO show feed of this user's videos in "profile-posts" */
 	render (){
+		console.log(this.state.profilePosts)
 		if (!this.state.profileId){
 			return (
 				<div>
 					<h2>Couldn't find that user</h2>
 					<button id="go-home-from-profile-btn" onClick={this.gotoHome}>Back</button>
+				</div>
+			);
+		} else if (this.state.profilePosts[0] !== undefined) {
+			console.log(this.state.profilePosts)
+			return (
+				<div>
+					<div id="profile">
+						<h1>User ID: {this.state.profileId}</h1>
+						<h2>User Email: {this.state.profileEmail}</h2>
+						<p>{this.state.numFollowers} followers, {this.state.numFollowing} following, {this.state.numVideos} videos</p>
+						{this.state.canFollow ? <button id="follow-user-btn" onClick={this.followUser}>Follow User</button> : null}
+						<button id="go-home-from-profile-btn" onClick={this.gotoHome}>Back</button>
+					</div>
+					<div id="profile-posts">
+						{
+						this.state.profilePosts.map(post => (
+	                        <div className="post" key={post.postId}>
+	                            <h2>
+	                                {post.sport} video from {this.convertDist(post.lat,post.lng)} away
+	                            </h2>
+	                            <h3><i>
+	                                posted {this.convertTime(post.timestamp)} ago by <Link to={"/profile/:"+post.userId}>{post.userId}</Link>
+	                            </i></h3>
+	                            <p>{post.likes} likes</p>
+	                        </div>
+	                    ))}
+					</div>
 				</div>
 			);
 		} else {
@@ -162,19 +192,6 @@ class ProfileScreen extends React.Component {
 						<p>{this.state.numFollowers} followers, {this.state.numFollowing} following, {this.state.numVideos} videos</p>
 						{this.state.canFollow ? <button id="follow-user-btn" onClick={this.followUser}>Follow User</button> : null}
 						<button id="go-home-from-profile-btn" onClick={this.gotoHome}>Back</button>
-					</div>
-					<div id="profile-posts">
-						{this.state.profilePosts.map((post) => (
-	                        <div className="post" key={post.postId}>
-	                            <h2>
-	                                {post.sport} video from {this.convertDist(post.lat,post.lng)} away
-	                            </h2>
-	                            <h3><i>
-	                                posted {this.convertTime(post.timestamp)} ago by <Link to={"/profile/:"+post.userId}>{post.userId}</Link>
-	                            </i></h3>
-	                            <p>{post.likes} likes</p>
-	                        </div>
-	                    ))}
 					</div>
 				</div>
 			);

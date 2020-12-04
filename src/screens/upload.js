@@ -131,7 +131,7 @@ class UploadScreen extends React.Component {
                         sport: this.state.Categories,
                         fileName: currFile.name
                     }
-                    post_ref.add(postData)
+                    post_ref.doc(this.state.postID).set(postData)
                     .then(function() {
                         alert("Document uploaded succesfully");
                     })
