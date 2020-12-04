@@ -87,8 +87,8 @@ class HomeScreen extends React.Component {
         };
     }
 
-    logOut(){
-        //this.props.history.push("/");  //should return to home screen
+    logOut = e => {
+        this.props.history.push("/");  //should return to landing screen
         firebase.auth().signOut();
     }
 
@@ -118,9 +118,11 @@ class HomeScreen extends React.Component {
 
             });
 
-            console.log('loadNearbyPosts', posts);
+            console.log(posts);
 
-            this.setState({ posts });
+            this.setState({
+                posts: posts 
+            });
         });
 
     }
@@ -170,12 +172,21 @@ class HomeScreen extends React.Component {
         return delay.toString() + 'yr';
     }
 
-    // TODO use .map() method with firebase to load posts dynamically
+    convertDist(lat, lng){
+        let dist = Math.sqrt(Math.pow(Math.abs(this.state.userLat - lat),2) + 
+            Math.pow(Math.abs(this.state.userLng - lng),2));
+
+        let distStr = (69*dist + '').substring(0,5);
+
+        return distStr + "mi";
+    }
+
+    // use .map() method with firebase to load posts dynamically
     // from https://github.com/samfromaway/firebase-tutorial/blob/master/src/GetFirebase.js
 	render(){
         return (
             <SplitPane split="horizontal" >
-                <Pane minSize="60%">
+                <div>
                     {this.state.posts.map((post) => (
                         <div className="post" key={post.postId}>
                             <h2>
@@ -185,13 +196,13 @@ class HomeScreen extends React.Component {
                             <p>{post.likes} likes</p>
                         </div>
                     ))}
-                </Pane>
-                <Pane minSize="40%">
+                </div>
+                <div>
                     <button onClick={this.viewLoggedUserProfile}>View My Profile</button>
                     <button onClick={this.uploadVideo}>Upload Video</button>
                     <button onClick={this.logOut}>Log Out</button>
                     <VideoPane id="video" />
-                </Pane>
+                </div>
             </SplitPane>
         );
     }

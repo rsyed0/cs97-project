@@ -2,7 +2,7 @@ import React from "react"
 
 import firebase from "../firebase";
 
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 import { withRouter } from "react-router";
 
 import { Redirect } from "react-router-dom";
@@ -18,12 +18,12 @@ class ProfileScreen extends React.Component {
 			numFollowers: 0,
 			numFollowing: 0,
 			numVideos: 0,
-			isLoggedUserFollowing: false,
 			canFollow: false,
+			profilePosts: [],
 		};
 	}
 
-	componentDidMount(){
+	componentWillMount(){
 		// get ID of profile to be viewed from link
 		var { profileId } = this.props.match.params;
 
@@ -35,27 +35,54 @@ class ProfileScreen extends React.Component {
 			canFollow: (profileId !== currentUser.uid),
 		});
 
-		const context = this;
+		//console.log("PROFILE ID: "+this.state.profileId);
 
 		const ref = firebase.firestore().collection("users");
-		ref.doc(profileId).get().then(function(doc) {
-			console.log(doc.data());
+		ref.doc(profileId).get().then((doc) => {
+			//console.log(doc.data());
 
-			context.setState({
+			this.setState({
 				profileEmail: doc.data().email,
 				numFollowers: doc.data().numFollowers,
 				numFollowing: doc.data().numFollowing,
 				numVideos: doc.data().numVideos,
 			});
 
-			console.log(context.state);
+			//console.log(this.state);
 		});
 
-		// TODO check if logged in user is already following this user
+		// check if logged in user is already following this user
+		ref.doc(currentUser.uid).collection("following").onSnapshot((querySnapshot) => {
+			querySnapshot.forEach((doc) => {
+				if (doc.data().userId === profileId){
+					this.setState({
+						canFollow: false,
+					});
+				}
+			});
+		});
+
+		const userRef = firebase.firestore().collection("users").doc(profileId).collection("videos");
+		const postRef = firebase.firestore().collection("posts");
+
+		const context = this;
+
+        userRef.onSnapshot((querySnapshot) => {
+
+            querySnapshot.forEach((doc) => {
+            	let postId = doc.data().postId;
+
+            	if (postId != ""){
+	            	postRef.doc(postId).onSnapshot((postSnapshot) => {
+	            		context.state.posts.push(postSnapshot.data());
+	            	});
+	            }
+            });
+
+        });
 	}
 
 	gotoHome = e => {
-		// TODO figure out how to use history in stateful component
 		this.props.history.push("/home");
 	}
 
@@ -86,10 +113,46 @@ class ProfileScreen extends React.Component {
 		}
 	}
 
+	convertTime(timestamp){
+        var unixSecDelay = Math.round((new Date()).getTime() / 1000) - timestamp;
+
+        var mult = [60,60,24,7,4,12];
+        var names = ['s','m','h','d','w','mo'];
+        var bound = 60;
+        var divider = 1;
+
+        var i;
+        for (i = 0; i < mult.length; i++) {
+            if (unixSecDelay < bound){
+                var delay = Math.round(unixSecDelay/divider);
+                return delay.toString() + names[i];
+            }
+            divider = divider*mult[i];
+            bound = bound*mult[i+1];
+        }
+        
+        var delay = Math.round(unixSecDelay/31540000);
+        return delay.toString() + 'yr';
+    }
+
+    convertDist(lat, lng){
+        let dist = Math.sqrt(Math.pow(Math.abs(this.state.userLat - lat),2) + 
+            Math.pow(Math.abs(this.state.userLng - lng),2));
+
+        let distStr = (69*dist + '').substring(0,5);
+
+        return distStr + "mi";
+    }
+
 	/* TODO show feed of this user's videos in "profile-posts" */
 	render (){
 		if (!this.state.profileId){
-			return (<div></div>);
+			return (
+				<div>
+					<h2>Couldn't find that user</h2>
+					<button id="go-home-from-profile-btn" onClick={this.gotoHome}>Back</button>
+				</div>
+			);
 		} else {
 			return (
 				<div>
@@ -101,6 +164,17 @@ class ProfileScreen extends React.Component {
 						<button id="go-home-from-profile-btn" onClick={this.gotoHome}>Back</button>
 					</div>
 					<div id="profile-posts">
+						{this.state.profilePosts.map((post) => (
+	                        <div className="post" key={post.postId}>
+	                            <h2>
+	                                {post.sport} video from {this.convertDist(post.lat,post.lng)} away
+	                            </h2>
+	                            <h3><i>
+	                                posted {this.convertTime(post.timestamp)} ago by <Link to={"/profile/:"+post.userId}>{post.userId}</Link>
+	                            </i></h3>
+	                            <p>{post.likes} likes</p>
+	                        </div>
+	                    ))}
 					</div>
 				</div>
 			);
