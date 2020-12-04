@@ -3,12 +3,22 @@ import React, { Component } from "react"
 import firebase from "../firebase";
 import 'firebase/storage';
 import { AuthContext } from "../firebaseauth";
-import { Typography, Button, Form, message, Input } from 'antd';
+import { Typography, Button, Form, Select, Input } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import Dropzone from 'react-dropzone'
 import { usePosition } from 'use-position';
 
 import { withRouter } from "react-router";
+const { Title } = Typography;
+
+const { Option } = Select;
+
+const tailLayout = {
+    wrapperCol: {
+      offset: 8,
+      span: 16,
+    },
+  };
 
 // TODO setup firebase storage, link with this
 // class for uploading a video
@@ -25,15 +35,14 @@ class UploadScreen extends React.Component {
             Description: "",
             Categories: "", 
             Catogory: [
-                { value: 0, label: "Skating" },
                 { value: 0, label: "Basketball" },
                 { value: 0, label: "Nature" },
                 { value: 0, label: "Soccer" },
                 { value: 0, label: "Football" },
                 { value: 0, label: "Hockey" },
                 { value: 0, label: "Baseball" },
+                { value: 0, label: "Skating" },
             ],
-            Title: Typography,
             TextArea: Input,
             file: null  
         };
@@ -50,9 +59,9 @@ class UploadScreen extends React.Component {
         });
     }
 
-    handleChangeTwo = (event) => {
+    handleChangeTwo = value => {
         this.setState({
-            Categories: event.currentTarget.value
+            Categories: value
         });
     }
 
@@ -176,7 +185,7 @@ class UploadScreen extends React.Component {
                     //     })
                     
                     //go back to home page
-                    //this.goBack()
+                    this.goBack()
                 });
             }
             else {
@@ -220,12 +229,12 @@ class UploadScreen extends React.Component {
     render() {
         return (
             <div style={{ maxWidth: '700px', margin: '2rem auto' }}>
-            <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-                <this.state.Title level={2} > Upload Video</this.state.Title>
-            </div>
+            <Typography style={{ textAlign: 'center', marginBottom: '2rem' }}>
+                <Title>Video Upload</Title>
+            </Typography>
     
             <Form onSubmit={this.onSubmit}>
-                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between'}}>
                     <Dropzone 
                         multiple={false}
                         maxSize={800000000}
@@ -257,22 +266,28 @@ class UploadScreen extends React.Component {
                     value={this.state.Description}
                 />
             <div style={{ margin: '24px 0' }} />
-    
-                <label>Sport</label>
+                
+                <label>Activity</label>
                 <br></br>
-                <select onChange={this.handleChangeTwo} value={this.state.Categories}>
+                <Form.Item>
+                <Select placeholder="Select an activity" onChange={this.handleChangeTwo} value={this.state.Categories}>
                     {this.state.Catogory.map((item, index) => (
-                        <option key={index} value={item.label}>{item.label}</option>
+                        <Option key={index} value={item.label}>{item.label}</Option>
                     ))}
-                </select>
-                <div style={{ margin: '40px 0' }} />
+                </Select>
+                </Form.Item>
+            <div style={{ margin: '40px 0' }} />
     
-                <Button type="primary" size="large" onClick={this.onSubmit}>
-                    Submit
-                </Button>
-                <Button type="primary" size="large" onClick={this.goBack}>
-                    Cancel
-                </Button>
+                <Form.Item {...tailLayout}>
+                    <Button type="primary" htmlType="submit" onClick={this.onSubmit}>
+                        Submit
+                    </Button>
+                    &nbsp;&nbsp;&nbsp; 
+                    <Button type="primary" htmlType="button" onClick={this.goBack}>
+                        Cancel
+                    </Button>
+                </Form.Item>
+
                 {/* <br></br>
                 <Button onClick={this.showImage}>
                     Image
