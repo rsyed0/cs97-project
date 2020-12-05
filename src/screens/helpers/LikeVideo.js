@@ -14,7 +14,6 @@ function LikeVideo(props) {
     const [LikeAction, setLikeAction] = useState(null)
 
     let variable = {};
-    const currently_liked = false;
 
     if (props.video) {
         variable = { videoId: props.videoId, userId: props.userId }
