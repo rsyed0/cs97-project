@@ -4,7 +4,7 @@ import { withRouter } from "react-router";
 import firebase from "../firebase";
 import { List } from 'antd';
 import LikeVideo from "./helpers/LikeVideo"
-
+import { Button } from 'antd';
 
 class PlayVideoScreen extends React.Component {
     constructor (props){
@@ -68,6 +68,10 @@ class PlayVideoScreen extends React.Component {
 
         return url;
     }
+
+    goBack = () => {
+        this.props.history.push("/home");
+    }
     
     render()
     {
@@ -80,15 +84,21 @@ class PlayVideoScreen extends React.Component {
                     {/* <List.Item actions={[<LikeVideo videoId={this.state.videoID} userId={this.state.userID}/>] }>                 */}
                         <LikeVideo video videoId={this.state.videoID} userId={this.state.userID}/>
                     </List.Item>
+                    <div style={{ margin: '24px 0' }} />
+                    <Button type="primary" htmlType="button" onClick={this.goBack}>
+                        Return Home
+                    </Button>
                 </div>
                 
             );
         } else {
             return (
-                <div>Loading...</div> 
-                    // <Button type="primary" htmlType="button" onClick={this.goBack}>
-                    //     Return Home
-                    // </Button>
+                <div>
+                    <div>Loading...</div> 
+                    <Button type="primary" htmlType="button" onClick={this.goBack}>
+                        Return Home
+                    </Button>
+                </div>
             );
         }
     }

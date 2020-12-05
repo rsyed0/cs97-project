@@ -52,8 +52,6 @@ function LikeVideo(props) {
         }
     }
 
-
-
     return (
         <React.Fragment>
             <span key="comment-basic-like">
@@ -62,7 +60,7 @@ function LikeVideo(props) {
                         onClick={onLike} />
                 </Tooltip>
                 <span style={{ paddingLeft: '8px', cursor: 'auto' }}>{Likes}</span>
-            </span>&nbsp;&nbsp;
+            </span>
         </React.Fragment>
     )
 }
