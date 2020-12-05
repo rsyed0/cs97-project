@@ -3,21 +3,25 @@ import { Tooltip } from 'antd';
 import { LikeOutlined } from '@ant-design/icons';
 import firebase from "../../firebase";
 
+
+let currently_liked = false;
+
+
+
 function LikeVideo(props) {
 
     const [Likes, setLikes] = useState(0)
     const [LikeAction, setLikeAction] = useState(null)
+
     let variable = {};
     const currently_liked = false;
 
     if (props.video) {
         variable = { videoId: props.videoId, userId: props.userId }
-    } else {
-        variable = { commentId: props.commentId, userId: props.userId }
+    // } else {
+    //     variable = { commentId: props.commentId, userId: props.userId }
     }
-
     
-
 
     useEffect(() => {
         //get video metedata from firestore to get number of video likes
@@ -31,19 +35,27 @@ function LikeVideo(props) {
                 setLikeAction('liked')
             }
         });
-        
 
-    }, [currently_liked])
+    }, [props.videoId])
+
 
     const onLike = () => {
         //increase likes by 1
-        if (LikeAction === null) {
-            
-
+        const post_ref = firebase.firestore().collection("posts");
+        if (currently_liked === false) {
+            post_ref.doc(props.videoId).update({
+               likes: (Likes + 1)
+            });
+            currently_liked = true;
+            setLikes(Likes+1);
         } else {   //unlike, decrease likes by 1
-            
-        }
+            post_ref.doc(props.videoId).update({
+                likes: (Likes - 1)
+            });
+            currently_liked = false;
+            setLikes(Likes-1);
 
+        }
     }
 
 

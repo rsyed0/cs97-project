@@ -86,6 +86,9 @@ class PlayVideoScreen extends React.Component {
         } else {
             return (
                 <div>Loading...</div> 
+                    // <Button type="primary" htmlType="button" onClick={this.goBack}>
+                    //     Return Home
+                    // </Button>
             );
         }
     }
