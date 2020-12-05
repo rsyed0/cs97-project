@@ -215,9 +215,6 @@ class UploadScreen extends React.Component {
 
 
 
-
-    //             document.getElementById("new-img").src = url;
-    //         })
     //     });
     // }
         
