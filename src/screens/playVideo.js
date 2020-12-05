@@ -2,13 +2,17 @@ import React, { Component } from 'react'
 import ReactPlayer from 'react-player'
 import { withRouter } from "react-router";
 import firebase from "../firebase";
+import { List } from 'antd';
+import LikeVideo from "./helpers/LikeVideo"
 
 
 class PlayVideoScreen extends React.Component {
     constructor (props){
 		super(props);
 		this.state = {
-			url: null,
+            url: null,
+            videoID: null,
+            userID: null
         };
     }
     
@@ -27,6 +31,11 @@ class PlayVideoScreen extends React.Component {
 
         console.log('UID', UID);
         console.log('postId', postId);
+
+        this.setState({
+            videoID: postId,
+            userID: UID
+        });
 
         const user_doc = firebase.firestore().collection("users").doc(UID);
         const postDoc = await (user_doc.collection("videos").doc(postId).get());
@@ -63,9 +72,22 @@ class PlayVideoScreen extends React.Component {
     render()
     {
         console.log('Showing video for url:', this.state.url);
-        return (
-            this.state.url !== null ? <ReactPlayer controls={true} url={this.state.url}/> : <div>Loading...</div>
-        );
+        if (this.state.url !== null) {
+            return (
+                <div className="postPage" style={{ width: '100%', padding: '3rem 4em' }}>
+                    <ReactPlayer controls={true} url={this.state.url}/>  
+                    <List.Item>
+                    {/* <List.Item actions={[<LikeVideo videoId={this.state.videoID} userId={this.state.userID}/>] }>                 */}
+                        <LikeVideo video videoId={this.state.videoID} userId={this.state.userID}/>
+                    </List.Item>
+                </div>
+                
+            );
+        } else {
+            return (
+                <div>Loading...</div> 
+            );
+        }
     }
 }
 
