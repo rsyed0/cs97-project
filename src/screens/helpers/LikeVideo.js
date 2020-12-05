@@ -3,7 +3,10 @@ import { Tooltip } from 'antd';
 import { LikeOutlined } from '@ant-design/icons';
 import firebase from "../../firebase";
 
+
 let currently_liked = false;
+
+
 
 function LikeVideo(props) {
 
@@ -11,6 +14,7 @@ function LikeVideo(props) {
     const [LikeAction, setLikeAction] = useState(null)
 
     let variable = {};
+    const currently_liked = false;
 
     if (props.video) {
         variable = { videoId: props.videoId, userId: props.userId }
@@ -31,6 +35,7 @@ function LikeVideo(props) {
                 setLikeAction('liked')
             }
         });
+
     }, [props.videoId])
 
 
@@ -49,6 +54,7 @@ function LikeVideo(props) {
             });
             currently_liked = false;
             setLikes(Likes-1);
+
         }
     }
 
