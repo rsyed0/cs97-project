@@ -15,7 +15,7 @@ const { Option } = Select;
 
 const tailLayout = {
     wrapperCol: {
-      offset: 8,
+      offset: 9,
       span: 16,
     },
   };
@@ -232,9 +232,8 @@ class UploadScreen extends React.Component {
             <Typography style={{ textAlign: 'center', marginBottom: '2rem' }}>
                 <Title>Video Upload</Title>
             </Typography>
-    
             <Form onSubmit={this.onSubmit}>
-                <div style={{ display: 'flex', justifyContent: 'space-between'}}>
+                <div style={{ display: 'flex', justifyContent: "center", alignItems: "center"}}>
                     <Dropzone 
                         multiple={false}
                         maxSize={800000000}
@@ -276,7 +275,7 @@ class UploadScreen extends React.Component {
                     ))}
                 </Select>
                 </Form.Item>
-            <div style={{ margin: '40px 0' }} />
+            <div style={{ margin: '40px 0', justifyContent: "center", alignItems: "center"}} />
     
                 <Form.Item {...tailLayout}>
                     <Button type="primary" htmlType="submit" onClick={this.onSubmit}>
@@ -294,7 +293,6 @@ class UploadScreen extends React.Component {
                 </Button>
                 <br></br>
                 <img id="new-img" alt="testy"/> */}
-    
             </Form>
         </div>
         );
