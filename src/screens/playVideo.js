@@ -8,18 +8,25 @@ import { Button } from 'antd';
 
 class PlayVideoScreen extends React.Component {
     constructor (props){
-		super(props);
+        super(props);
 		this.state = {
             url: null,
             videoID: null,
             userID: null
         };
+        
     }
     
     componentDidMount = async () =>
-    {
-        console.log('postId', this.props.match.params.postId);
-        const url = await this.getVideoUrl(this.props.match.params.postId);
+    {   
+        let postId = null;
+        if (this.props.postId) { // postId from props
+            postId = this.props.postId
+        } else { // postId from url
+            postId = this.props.match.params.postId;
+        }
+        console.log('postId', postId);
+        const url = await this.getVideoUrl(postId);
         this.setState({ url });
     }
 
@@ -37,11 +44,11 @@ class PlayVideoScreen extends React.Component {
             userID: UID
         });
 
-        const user_doc = firebase.firestore().collection("users").doc(UID);
-        const postDoc = await (user_doc.collection("videos").doc(postId).get());
-        console.log('post doc', postDoc);
+        //const user_doc = await firebase.firestore().collection("users").doc(UID);
+        const postDoc = await (firebase.firestore().collection("posts").doc(postId).get());
+        console.log('PlayVideo: Post Document: ', postDoc);
         const postDocData = postDoc.data();
-        console.log('postDocData', postDocData);
+        console.log('PlayVideo: Post Document Data: ', postDocData);
 
         if (postDocData) {
            const { fileName } = postDocData;
@@ -85,9 +92,12 @@ class PlayVideoScreen extends React.Component {
                         <LikeVideo video videoId={this.state.videoID} userId={this.state.userID}/>
                     </List.Item>
                     <div style={{ margin: '24px 0' }} />
+
+                    {!this.props.hideShowButton && 
                     <Button type="primary" htmlType="button" onClick={this.goBack}>
                         Return Home
-                    </Button>
+                    </Button>}
+                    
                 </div>
                 
             );
@@ -95,9 +105,10 @@ class PlayVideoScreen extends React.Component {
             return (
                 <div>
                     <div>Loading...</div> 
+                    {!this.props.hideShowButton && 
                     <Button type="primary" htmlType="button" onClick={this.goBack}>
                         Return Home
-                    </Button>
+                    </Button>}
                 </div>
             );
         }

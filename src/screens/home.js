@@ -1,6 +1,7 @@
 import React, { Component } from "react"
 import SplitPane, { Pane } from 'react-split-pane';
-
+import ReactPlayer from 'react-player';
+import PlayVideoScreen from "./playVideo";
 import { usePosition } from 'use-position';
 
 import { useHistory, Link } from "react-router-dom";
@@ -79,7 +80,7 @@ class HomeScreen extends React.Component {
 
         // max distance (in lat/lng degrees) where a post will show
         this.state = {
-            maxDist: 0.25, 
+            maxDist: 100, 
             posts: [], 
             userLat: 0, 
             userLng: 0,
@@ -112,13 +113,13 @@ class HomeScreen extends React.Component {
                 console.log("for post: lat: "+data.lat+", lng: "+data.lng);
                 console.log("dist from post: "+dist);
 
-                if (dist <= this.state.maxDist) {
+                if (dist <= this.state.maxDist) { // display if the post is within the max distance
                     posts.push(data);
                 }
 
             });
 
-            console.log(posts);
+            console.log("POSTS: ", posts);
 
             this.setState({
                 posts: posts 
@@ -185,25 +186,29 @@ class HomeScreen extends React.Component {
     // from https://github.com/samfromaway/firebase-tutorial/blob/master/src/GetFirebase.js
 	render(){
         return (
-            <SplitPane split="horizontal" >
-                <div>
-                    {this.state.posts.map((post) => (
-                        <div className="post" key={post.postId}>
-                            <h2>
-                            <Link to={"/playVideo/"+post.postId}>Video</Link> post {this.convertTime(post.timestamp)} ago 
-                                by <Link to={"/profile/"+post.userId}>{post.userId}</Link> from ({post.lat},{post.lng})
-                            </h2>
-                            <p>{post.likes} likes</p>
-                        </div>
-                    ))}
-                </div>
+            <div>
                 <div>
                     <button onClick={this.viewLoggedUserProfile}>View My Profile</button>
                     <button onClick={this.uploadVideo}>Upload Video</button>
                     <button onClick={this.logOut}>Log Out</button>
-                    <VideoPane id="video" />
+
                 </div>
-            </SplitPane>
+
+                <VideoPane id="video" />
+
+                <div>
+                    {this.state.posts.map((post) => (
+                        <div className="post" key={post.postId}>
+                            <h2>
+                                <Link to={"/playVideo/" + post.postId}>Video</Link> post {this.convertTime(post.timestamp)} ago
+                                by <Link to={"/profile/" + post.userId}>{post.userId}</Link> from ({post.lat},{post.lng})
+                            </h2>
+                            <p>{post.likes} likes</p>
+                            <PlayVideoScreen postId={post.postId} hideShowButton={true} />
+                        </div>
+                    ))}
+                </div>
+            </div>
         );
     }
 
