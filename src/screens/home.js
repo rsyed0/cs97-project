@@ -2,6 +2,7 @@ import React, { Component } from "react"
 import SplitPane, { Pane } from 'react-split-pane';
 import ReactPlayer from 'react-player';
 import PlayVideoScreen from "./playVideo";
+import Comments from "../components/Comments";
 import { usePosition } from 'use-position';
 
 import { useHistory, Link } from "react-router-dom";
@@ -94,7 +95,6 @@ class HomeScreen extends React.Component {
     }
 
     loadNearbyPosts(){
-
         const ref = firebase.firestore().collection("posts");
 
         ref.onSnapshot((querySnapshot) => {
@@ -104,17 +104,17 @@ class HomeScreen extends React.Component {
 
             querySnapshot.forEach((doc) => {
 
-                let data = doc.data();
-                console.log('snapshot data', data);
+                let post = doc.data();
+                console.log('snapshot data', post);
 
-                let dist = Math.sqrt(Math.pow(Math.abs(this.state.userLat - data.lat),2) + 
-                    Math.pow(Math.abs(this.state.userLng - data.lng),2));
+                let dist = Math.sqrt(Math.pow(Math.abs(this.state.userLat - post.lat),2) + 
+                    Math.pow(Math.abs(this.state.userLng - post.lng),2));
 
-                console.log("for post: lat: "+data.lat+", lng: "+data.lng);
+                console.log("for post: lat: "+post.lat+", lng: "+post.lng);
                 console.log("dist from post: "+dist);
 
                 if (dist <= this.state.maxDist) { // display if the post is within the max distance
-                    posts.push(data);
+                    posts.push(post);
                 }
 
             });
@@ -205,6 +205,7 @@ class HomeScreen extends React.Component {
                             </h2>
                             <p>{post.likes} likes</p>
                             <PlayVideoScreen postId={post.postId} hideShowButton={true} />
+                            <Comments post={post}/>
                         </div>
                     ))}
                 </div>
