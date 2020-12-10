@@ -31,7 +31,7 @@ const LandingScreen = () => {
 
 	return (
 		<div id="landing-page-content">
-			<h1>Welcome to the CS 97 Project</h1>
+			<h1>Activ</h1>
 			<button onClick={gotoSignup}>Sign Up</button>
 			<button onClick={gotoLogin}>Log In</button>
 			{/* <button onClick={goToUpload}>Upload</button>
