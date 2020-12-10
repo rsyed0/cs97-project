@@ -33,7 +33,7 @@ class Comments extends React.Component {
 
     render() {
         return (
-        <div>
+        <div  style={{ width: '100%', padding: '0rem 5em' }}>
             <h3>
                 Comments
             </h3>

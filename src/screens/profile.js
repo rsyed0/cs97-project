@@ -116,25 +116,22 @@ class ProfileScreen extends React.Component {
 	}
 
 	convertTime(timestamp){
-        var unixSecDelay = Math.round((new Date()).getTime() / 1000) - timestamp;
+        //Date.now() returns the number of milliseconds since January 1, 1970 00:00:00 UTC
+        //Therefore I calculate the days since the post by getting the current date, converting it to days
+        //Then convert the date of the post to days, then subtract the 2
+        var total_seconds = parseInt(Math.floor(timestamp / 1000));
+        var total_minutes = parseInt(Math.floor(total_seconds / 60));
+        var total_hours = parseInt(Math.floor(total_minutes / 60));
+        var days = parseInt(Math.floor(total_hours / 24));
 
-        var mult = [60,60,24,7,4,12];
-        var names = ['s','m','h','d','w','mo'];
-        var bound = 60;
-        var divider = 1;
+        var current_date = Date.now()
+        var total_seconds2 = parseInt(Math.floor(current_date/ 1000));
+        var total_minutes2 = parseInt(Math.floor(total_seconds2 / 60));
+        var total_hours2 = parseInt(Math.floor(total_minutes2 / 60));
+        var current_date_in_days = parseInt(Math.floor(total_hours2 / 24));
 
-        var i;
-        for (i = 0; i < mult.length; i++) {
-            if (unixSecDelay < bound){
-                var delay = Math.round(unixSecDelay/divider);
-                return delay.toString() + names[i];
-            }
-            divider = divider*mult[i];
-            bound = bound*mult[i+1];
-        }
-        
-        var delay = Math.round(unixSecDelay/31540000);
-        return delay.toString() + 'yr';
+        var days_since_post = current_date_in_days - days;
+        return days_since_post
     }
 
     convertDist(lat, lng){
@@ -156,7 +153,8 @@ class ProfileScreen extends React.Component {
 					<button id="go-home-from-profile-btn" onClick={this.gotoHome}>Back</button>
 				</div>
 			);
-		} else if (this.state.profilePosts[0] !== undefined) {
+		} 
+		 else if (this.state.profilePosts[0] !== undefined) {
 			console.log(this.state.profilePosts)
 			return (
 				<div>
@@ -175,7 +173,7 @@ class ProfileScreen extends React.Component {
 	                                {post.sport} video from {this.convertDist(post.lat,post.lng)} away
 	                            </h2>
 	                            <h3><i>
-	                                posted {this.convertTime(post.timestamp)} ago by <Link to={"/profile/:"+post.userId}>{post.userId}</Link>
+	                                posted {this.convertTime(post.timestamp)} days ago by <Link to={"/profile/:"+post.userId}>{post.userId}</Link>
 	                            </i></h3>
 	                            <p>{post.likes} likes</p>
 	                        </div>
@@ -183,7 +181,8 @@ class ProfileScreen extends React.Component {
 					</div>
 				</div>
 			);
-		} else {
+		} 
+		else {
 			return (
 				<div>
 					<div id="profile">

@@ -11,6 +11,10 @@ import { withRouter } from "react-router";
 
 import firebase from "../firebase";
 
+// import GoogleMapReact from 'google-map-react';
+
+// const google = window.google
+
 // class to represent a video post
 // won't show video, just metadata, will show video on click
 // child of FeedPane
@@ -152,25 +156,22 @@ class HomeScreen extends React.Component {
     }
 
     convertTime(timestamp){
-        var unixSecDelay = Math.round((new Date()).getTime() / 1000) - timestamp;
+        //Date.now() returns the number of milliseconds since January 1, 1970 00:00:00 UTC
+        //Therefore I calculate the days since the post by getting the current date, converting it to days
+        //Then convert the date of the post to days, then subtract the 2
+        var total_seconds = parseInt(Math.floor(timestamp / 1000));
+        var total_minutes = parseInt(Math.floor(total_seconds / 60));
+        var total_hours = parseInt(Math.floor(total_minutes / 60));
+        var days = parseInt(Math.floor(total_hours / 24));
 
-        var mult = [60,60,24,7,4,12];
-        var names = ['s','m','h','d','w','mo'];
-        var bound = 60;
-        var divider = 1;
+        var current_date = Date.now()
+        var total_seconds2 = parseInt(Math.floor(current_date/ 1000));
+        var total_minutes2 = parseInt(Math.floor(total_seconds2 / 60));
+        var total_hours2 = parseInt(Math.floor(total_minutes2 / 60));
+        var current_date_in_days = parseInt(Math.floor(total_hours2 / 24));
 
-        var i;
-        for (i = 0; i < mult.length; i++) {
-            if (unixSecDelay < bound){
-                var delay = Math.round(unixSecDelay/divider);
-                return delay.toString() + names[i];
-            }
-            divider = divider*mult[i];
-            bound = bound*mult[i+1];
-        }
-        
-        var delay = Math.round(unixSecDelay/31540000);
-        return delay.toString() + 'yr';
+        var days_since_post = current_date_in_days - days;
+        return days_since_post
     }
 
     convertDist(lat, lng){
@@ -181,6 +182,25 @@ class HomeScreen extends React.Component {
 
         return distStr + "mi";
     }
+
+    // convertToLocation(lat, lng){
+    //     var latlng = new google.maps.LatLng(lat, lng);
+    //     // This is making the Geocode request
+    //     var geocoder = new google.maps.Geocoder();
+    //     geocoder.geocode({ 'latLng': latlng }, function (results, status) {
+    //     if (status !== google.maps.GeocoderStatus.OK) {
+    //         alert(status);
+    //     }
+    //     // This is checking to see if the Geoeode Status is OK before proceeding
+    //     var address = "temp"
+    //     if (status == google.maps.GeocoderStatus.OK) {
+    //         console.log(results);
+    //         address = (results[0].formatted_address);
+    //     }
+    //     return address;
+    // });
+
+    // }
 
     // use .map() method with firebase to load posts dynamically
     // from https://github.com/samfromaway/firebase-tutorial/blob/master/src/GetFirebase.js
@@ -200,12 +220,12 @@ class HomeScreen extends React.Component {
                     {this.state.posts.map((post) => (
                         <div className="post" key={post.postId}>
                             <h2>
-                                <Link to={"/playVideo/" + post.postId}>Video</Link> post {this.convertTime(post.timestamp)} ago
+                                {post.sport} post {this.convertTime(post.timestamp)} days ago
                                 by <Link to={"/profile/" + post.userId}>{post.userId}</Link> from ({post.lat},{post.lng})
                             </h2>
-                            <p>{post.likes} likes</p>
                             <PlayVideoScreen postId={post.postId} hideShowButton={true} />
                             <Comments post={post}/>
+                            <div style={{ margin: '100px 0' }} />
                         </div>
                     ))}
                 </div>
