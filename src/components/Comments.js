@@ -13,7 +13,7 @@ class Comments extends React.Component {
 
     handleCommentInputChange = (event) => {
         this.setState({commentText: event.target.value});
-        console.log(event.target.value, this.currentUser.email, this.props.post);
+        console.log("Comments::", event.target.value, this.currentUser.email, this.props.post);
     }
 
     handleSubmit = async (event) => {
@@ -32,6 +32,8 @@ class Comments extends React.Component {
     }
 
     render() {
+        // set comments to empty array if post doesn't have any comments
+        let comments = this.props.post.comments || [];
         return (
         <div  style={{ width: '100%', padding: '0rem 5em' }}>
             <h3>
@@ -42,11 +44,19 @@ class Comments extends React.Component {
                 <input type="text" value={this.state.commentText} onChange={this.handleCommentInputChange} placeholder="Comment Here" />
             </form>
             <div>
-                {/* Display comments */}
+                {comments.map((comment) =>
+                        <p>{comment.username}: {comment.body}</p>
+
+                    // <div className="comment" key={comment.body}>
+                    //     <p>{comment.username}: {comment.body}</p>
+                    // </div>
+                )}
             </div>
         </div>
         )
     }
 }
+
+
 
 export default Comments;

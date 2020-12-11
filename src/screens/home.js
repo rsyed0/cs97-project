@@ -135,8 +135,8 @@ class HomeScreen extends React.Component {
 
     componentDidMount (){
         const homeScreen = this;
-
-        navigator.geolocation.getCurrentPosition(function(position) {
+       
+        navigator.geolocation.getCurrentPosition(function(position) { // gets the user location
             homeScreen.setState({
                 userLat: position.coords.latitude, 
                 userLng: position.coords.longitude
