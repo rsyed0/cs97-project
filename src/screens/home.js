@@ -222,10 +222,11 @@ class HomeScreen extends React.Component {
                 <div>
                     {this.state.posts.map((post) => (
                         <div className="post" key={post.postId}>
-                            <h2>
+                            <h2>{post.desciption}</h2>
+                            <h3>
                                 {post.sport} post {this.convertTime(post.timestamp)} days ago
-                                by <Link to={"/profile/" + post.userId}>{post.userEmail}</Link> from ({post.lat},{post.lng})
-                            </h2>
+                                by <Link to={"/profile/" + post.userId}>{post.userEmail}</Link> from {this.convertDist(post.lat,post.lng)}
+                            </h3>
                             <PlayVideoScreen postId={post.postId} hideShowButton={true} />
                             <Comments post={post}/>
                             <div style={{ margin: '100px 0' }} />
