@@ -80,10 +80,7 @@ const LoginScreen = () => {
 			>
 				<Input.Password name="password" type="password" placeholder="Password"/>
 			</Form.Item>
-		
-			<Form.Item {...tailLayout} name="remember" valuePropName="checked">
-				<Checkbox>Remember me</Checkbox>
-			</Form.Item>
+	
 		
 			<Form.Item {...tailLayout}>
 				<Button type="primary" htmlType="submit">
