@@ -80,12 +80,13 @@ class PlayVideoScreen extends React.Component {
         this.props.history.push("/home");
     }
     
+
     render()
     {
         console.log('Showing video for url:', this.state.url);
         if (this.state.url !== null) {
             return (
-                <div className="postPage" style={{ width: '100%', padding: '3rem 4em' }}>
+                <div className="postPage" style={{ width: '100%', padding: '0rem 5em' }}>
                     <ReactPlayer controls={true} url={this.state.url}/>  
                     <List.Item>
                     {/* <List.Item actions={[<LikeVideo videoId={this.state.videoID} userId={this.state.userID}/>] }>                 */}

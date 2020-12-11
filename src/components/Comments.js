@@ -35,7 +35,7 @@ class Comments extends React.Component {
         // set comments to empty array if post doesn't have any comments
         let comments = this.props.post.comments || [];
         return (
-        <div>
+        <div  style={{ width: '100%', padding: '0rem 5em' }}>
             <h3>
                 Comments
             </h3>
