@@ -5,6 +5,9 @@ import '../App.css';
 import { useHistory } from "react-router-dom";
 import { withRouter } from "react-router";
 
+import { Typography, Button } from 'antd';
+const { Title } = Typography;
+
 // landing page
 const LandingScreen = () => {
 	const history = useHistory();
@@ -31,9 +34,15 @@ const LandingScreen = () => {
 
 	return (
 		<div id="landing-page-content">
-			<h1>Activ</h1>
-			<button onClick={gotoSignup}>Sign Up</button>
-			<button onClick={gotoLogin}>Log In</button>
+			<div style={{ margin: '180px 0' }} />
+			<Typography style={{ textAlign: 'center', marginBottom: '2rem' }}>
+                <Title>Welcome to Activ</Title>
+            </Typography>
+			<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center'}} >
+				<Button type="primary" onClick={gotoSignup}>Sign Up</Button>
+				&nbsp;&nbsp;&nbsp; 
+				<Button  type="primary" onClick={gotoLogin}>Log In</Button>
+			</div>
 			{/* <button onClick={goToUpload}>Upload</button>
 			<button onClick={goToProfile}>Profile</button>
 			<button onClick={goToHome}>Home</button> */}

@@ -147,9 +147,10 @@ class UploadScreen extends React.Component {
                     .catch(function() {
                         alert("ERROR");
                     })
+                    const user_doc = firebase.firestore().collection("users").doc(UID);
+                    const post_doc = firebase.firestore().collection("posts").doc(this.state.postID)
 
                     //set video post with post ID
-                    const user_doc = firebase.firestore().collection("users").doc(UID);
                     user_doc.collection("videos").doc(this.state.postID).set({
                         postId: this.state.postID,
                         fileName: currFile.name,
@@ -159,8 +160,14 @@ class UploadScreen extends React.Component {
                     user_doc.get().then(function(doc) {
                         console.log(doc.data());
                         var vidNum = doc.data().numVideos;
+                        var user_email = doc.data().email;
                         
                         vidNum++;
+
+                        post_doc.update({
+                            userEmail: user_email
+                        })
+
                         user_doc.update({
                             numVideos: vidNum
                         });

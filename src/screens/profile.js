@@ -173,7 +173,7 @@ class ProfileScreen extends React.Component {
 	                                {post.sport} video from {this.convertDist(post.lat,post.lng)} away
 	                            </h2>
 	                            <h3><i>
-	                                posted {this.convertTime(post.timestamp)} days ago by <Link to={"/profile/:"+post.userId}>{post.userId}</Link>
+	                                posted {this.convertTime(post.timestamp)} days ago by <Link to={"/profile/:"+post.userId}>{this.state.profileEmail}</Link>
 	                            </i></h3>
 	                            <p>{post.likes} likes</p>
 	                        </div>
@@ -192,6 +192,7 @@ class ProfileScreen extends React.Component {
 						{this.state.canFollow ? <button id="follow-user-btn" onClick={this.followUser}>Follow User</button> : null}
 						<button id="go-home-from-profile-btn" onClick={this.gotoHome}>Back</button>
 					</div>
+					<div style={{ margin: '30px 0' }} />
 				</div>
 			);
 		}

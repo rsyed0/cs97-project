@@ -4,6 +4,7 @@ import ReactPlayer from 'react-player';
 import PlayVideoScreen from "./playVideo";
 import Comments from "../components/Comments";
 import { usePosition } from 'use-position';
+import { Button } from 'antd';
 
 import { useHistory, Link } from "react-router-dom";
 import { withRouter } from "react-router";
@@ -207,11 +208,13 @@ class HomeScreen extends React.Component {
 	render(){
         return (
             <div>
-                <div>
-                    <button onClick={this.viewLoggedUserProfile}>View My Profile</button>
-                    <button onClick={this.uploadVideo}>Upload Video</button>
-                    <button onClick={this.logOut}>Log Out</button>
-
+                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                    <Button type="primary" onClick={this.viewLoggedUserProfile}>View My Profile</Button>
+                    &nbsp;&nbsp;&nbsp; 
+                    <Button type="primary" onClick={this.uploadVideo}>Upload Video</Button>
+                    &nbsp;&nbsp;&nbsp; 
+                    <Button type="primary" onClick={this.logOut}>Log Out</Button>
+                    <div style={{ margin: '30px 0' }} />
                 </div>
 
                 <VideoPane id="video" />
@@ -221,7 +224,7 @@ class HomeScreen extends React.Component {
                         <div className="post" key={post.postId}>
                             <h2>
                                 {post.sport} post {this.convertTime(post.timestamp)} days ago
-                                by <Link to={"/profile/" + post.userId}>{post.userId}</Link> from ({post.lat},{post.lng})
+                                by <Link to={"/profile/" + post.userId}>{post.userEmail}</Link> from ({post.lat},{post.lng})
                             </h2>
                             <PlayVideoScreen postId={post.postId} hideShowButton={true} />
                             <Comments post={post}/>

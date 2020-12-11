@@ -128,24 +128,6 @@ const SignupScreen = () => {
 			</Form>
 		</div>
 	  );
-
-	// return (
-	// 	<div>
-	// 		<h1>Sign up</h1>
-	// 		<form onSubmit={handleSignUp}>
-	// 			<label>
-	// 				Email
-	// 				<input name="email" type="email" placeholder="Email" />
-	// 			</label>
-	// 			<label>
-	// 				Password
-	// 				<input name="password" type="password" placeholder="Password" />
-	// 			</label>
-	// 			<button type="submit">Sign Up</button>
-	// 		</form>
-	// 		<button onClick={gotoLanding}>Back</button>
-	// 	</div>
-	// );
 };
 
 export default withRouter(SignupScreen);
