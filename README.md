@@ -4,7 +4,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Available Scripts
 
-In the project directory, you can run:
+### Run these commands in the project directory
 
 In order to download the necessary node modules with the dependencies you can run:
 
