@@ -6,7 +6,6 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ### Run these commands in the project directory
 
-You may have to delete the package-lock.json file if it was already there.
 In order to download the necessary node modules with the dependencies you can run:
 
 ### 'npm install'
